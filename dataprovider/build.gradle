@@ -1,0 +1,88 @@
+import groovy.sql.Sql
+import java.sql.SQLException
+
+plugins {
+    id 'java'
+}
+
+group 'com.postal'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    driver
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.2.1.RELEASE'
+    driver group: 'org.hsqldb', name: 'hsqldb', version: '2.4.0'
+    compile group: 'org.hsqldb', name: 'hsqldb', version: '2.4.0'
+
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.47'
+}
+
+
+
+task startDB(type: JavaExec) {
+    classpath configurations.driver
+    main = 'org.hsqldb.server.Server'
+    args = ['--database.0', 'file:build/database/data', '--dbname.0', 'data']
+}
+
+task stopDatabase {
+    doLast {
+        executeSqlQuery('SHUTDOWN')
+    }
+}
+
+task createTables {
+    doLast {
+        executeSqlFile('create.sql')
+    }
+}
+
+task addData {
+    doLast {
+        executeSqlFile('addTestData.sql')
+    }
+}
+
+task dropTables {
+    doLast {
+        executeSqlFile('drop.sql')
+    }
+}
+
+configurations.driver.each { file ->
+    GroovyObject.class.classLoader.addURL(file.toURI().toURL())
+}
+
+def executeSqlFile(String fileName) {
+    String sqlScript = new File("${projectDir}/src/data/" + fileName).text
+    executeSqlQuery(sqlScript)
+}
+
+def executeSqlQuery(String sqlScript) {
+    def properties = [user: 'SA', password: '', allowMultiQueries: 'false'] as Properties
+    def url = "jdbc:hsqldb:hsql://localhost/data"
+    def driver = 'org.hsqldb.jdbc.JDBCDriver'
+    def connection = null
+    try {
+        connection = Sql.newInstance(url, properties, driver)
+        connection.execute(sqlScript)
+    }
+    catch (SQLException e) {
+        logger.log(LogLevel.INFO, 'Error in database connection', e)
+    }
+    finally {
+        if (connection != null) {
+            connection.close()
+        }
+    }
+}

@@ -1,0 +1,5 @@
+rootProject.name = 'audio-reporter'
+include 'integrationclient'
+include 'dataprovider'
+include 'apiprovider'
+include 'mainclient'

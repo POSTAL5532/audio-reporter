@@ -1,0 +1,7 @@
+.mainButton {
+    position: fixed !important;
+    left: 30px;
+    bottom: 30px;
+    padding: 15px;
+    z-index: 9999;
+}

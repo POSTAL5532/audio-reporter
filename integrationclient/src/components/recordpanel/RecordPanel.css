@@ -1,0 +1,148 @@
+.recordCard {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    min-width: 400px;
+    min-height: 197px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.canvas {
+    position: fixed;
+    width: 101%;
+    height: 101%;
+    top: -1px;
+    left: -1px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.closeButton {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    font-weight: bolder;
+    color: tomato;
+    cursor: pointer;
+}
+
+.closeButton:hover {
+    color: #ff8350;
+}
+
+.closeButton:active {
+    color: tomato;
+    outline: none;
+}
+
+.startRecordingButton {
+    width: 100%;
+    display: block;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: transparent;
+    border: solid 6px #ff2c00;
+    border-radius: 10px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+@keyframes radial-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 44, 0, 1);
+    }
+
+    100% {
+        box-shadow: 0 0 0 15px rgba(255, 44, 0, 0);
+    }
+}
+
+.startRecordingButton.recording {
+    animation: radial-pulse 1s infinite;
+    background-color: #ff2c00;
+    color: white;
+}
+
+.startRecordingButton:hover:enabled {
+    background-color: rgba(255, 44, 0, 0.65);
+    color: white;
+}
+
+.startRecordingButton:active:enabled {
+    background-color: #ad1e00;
+    border-color: #ad1e00;
+    color: white;
+}
+
+.stopRecordingButton {
+    width: 100%;
+    display: block;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: transparent;
+    border: solid 6px black;
+    border-radius: 10px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.stopRecordingButton:hover {
+    background-color: #676767;
+    color: white;
+}
+
+.stopRecordingButton:active {
+    background-color: black;
+    color: white;
+}
+
+.sendRecordButton, .playRecordButton {
+    width: 50%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: transparent;
+    border-radius: 10px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.sendRecordButton {
+    border: solid 6px #009cff;
+}
+
+.sendRecordButton:hover {
+    background-color: #aedaff;
+}
+
+.sendRecordButton:active {
+    background-color: #009cff;
+    color: white;
+}
+
+.playRecordButton {
+    border: solid 6px #00ca00;
+}
+
+.playRecordButton:hover, .playRecordButton.playing {
+    background-color: #74ca92;
+}
+
+.playRecordButton:active {
+    background-color: #00ca00;
+    color: white;
+}
+
+.startRecordingButton:focus,
+.closeButton:focus,
+.sendRecordButton:focus,
+.playRecordButton:focus,
+.stopRecordingButton:focus {
+    outline: none;
+}

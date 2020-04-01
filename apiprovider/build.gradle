@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'com.postal'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.1.RELEASE'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5', version: '2.10.1'
+
+    compile project(':dataprovider')
+}
+
+task(bootRun, dependsOn: 'classes', type: JavaExec) {
+    main = 'com.postal.apiprovider.Application'
+    classpath = sourceSets.main.runtimeClasspath
+}
