@@ -6,16 +6,14 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "record")
+@Table(name = "records")
 public class Record extends AbstractEntity {
 
     @Column(name = "from_page")
     private String fromPage;
 
-    @Column
     private float size;
 
-    @Column
     private Timestamp date;
 
     public Record() {
@@ -44,5 +42,15 @@ public class Record extends AbstractEntity {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "fromPage='" + fromPage + '\'' +
+                ", size=" + size +
+                ", date=" + date +
+                ", id='" + id + '\'' +
+                '}';
     }
 }

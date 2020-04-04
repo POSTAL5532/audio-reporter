@@ -3,12 +3,14 @@ package com.postal.apiprovider.services;
 import com.postal.dataprovider.models.Record;
 import com.postal.dataprovider.repositories.RecordRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class RecordService {
 
     private final RecordRepository recordRepository;

@@ -1,7 +1,3 @@
-/*INSERT INTO user (id, name, surname, email)
-VALUES (1, 'Александр', 'Розенбаум', 'roze.alexa33@gmail.com'),
-       (2, 'Никита', 'Аленьев-Лось', '1993nik@yandex.ru'),
-       (3, 'Катя', 'Ханто', 'kationok-5@mail.ru'),
-       (4, 'admin', 'admin', 'admin@admin.admin'),
-       (5, 'Юля', 'Резанович', 'yulchikNG@cool.ru'),
-       (6, 'Игорь', 'Щербаченя', 'evgenii-onegin91@mail.ru');*/
+INSERT INTO users (id, name, email, password, role, reg_date)
+VALUES ('4028e48f713215020171321690280001', 'postal', 'postal@qwe.qwe', 'igor5532', 'ROLE_ADMIN', '2020-09-05'),
+       ('4028e48f713215020171321690280002', 'ivan', 'ivan@qwe.qwe', 'ivan5532', 'ROLE_USER', '2020-05-25');
