@@ -7,7 +7,7 @@ import java.sql.Date;
 @Table(name = "users")
 public class User extends AbstractEntity {
 
-    private String name;
+    private String login;
 
     private String email;
 
@@ -19,16 +19,19 @@ public class User extends AbstractEntity {
     @Column(name = "reg_date")
     private Date regDate;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
     public User() {
         super();
     }
 
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getEmail() {
@@ -63,14 +66,23 @@ public class User extends AbstractEntity {
         this.regDate = regDate;
     }
 
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "name='" + login + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", regDate=" + regDate +
+                ", status=" + status +
                 ", id='" + id + '\'' +
                 '}';
     }
