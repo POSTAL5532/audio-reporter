@@ -1,3 +1,19 @@
+apply plugin: 'com.moowork.node'
+
 group 'com.postal'
 version '1.0-SNAPSHOT'
 
+task buildReactClient(type: NpmTask) {
+    doFirst {
+        println('\n#### BUILD MAIN-CLIENT REACT APPLICATION ####')
+        project.setTSConfigFile()
+    }
+
+    args = ['run-script', 'build']
+
+    doLast {
+        project.resetTSConfigFile()
+    }
+}
+
+tasks.build.dependsOn(buildReactClient)

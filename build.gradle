@@ -1,3 +1,43 @@
+import groovy.json.JsonSlurper
+
 group 'com.postal'
 version '1.0-SNAPSHOT'
 
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+// выполняет изменения в tsconfig-файлах react-клиентов, сохраняет оригинал конфига
+ext.setTSConfigFile = { ->
+    String tsconfigContent = file('tsconfig.json').text
+    project.ext.set('originalTSConfig', tsconfigContent)
+    def json = new JsonSlurper().parseText(tsconfigContent)
+
+    if (json.compilerOptions.noEmit) {
+        file('tsconfig.json').text = tsconfigContent.replaceAll('"noEmit": true', '"noEmit": false')
+    }
+}
+
+// приводит tsconfig-файлы react-клиентов к досборочному состоянию
+ext.resetTSConfigFile = { -> file('tsconfig.json').text = project.originalTSConfig }
+
+[':integrationclient', ':mainclient'].each { name ->
+    project(":$name") {
+        buildscript {
+            repositories {
+                maven { url "https://plugins.gradle.org/m2/" }
+            }
+            dependencies {
+                classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
+            }
+        }
+    }
+}
