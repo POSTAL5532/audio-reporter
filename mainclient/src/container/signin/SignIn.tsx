@@ -1,70 +1,41 @@
 import React, {Component} from 'react';
 import {Card, Spin, Typography} from "antd";
 import "./SignIn.css";
-import AuthService from "../../service/auth/AuthService";
 import {LoadingOutlined} from "@ant-design/icons/lib";
-import {ACCESS_TOKEN} from "../../config";
 import SignInForm from "./SignInForm";
-import {setAuth} from "../../store/auth/actions";
+import {authorize} from "../../store/auth/actions";
 import {connect} from "react-redux";
-
-
-type SignInState = {
-    loading: boolean;
-    error: boolean;
-    errorMessage: string;
-}
+import {ApplicationState} from "../../configureStore";
+import {AuthState} from "../../store/auth/types";
 
 type DispatchProps = {
-    setAuth: (auth: boolean) => {}
+    authorize: (loginOrEmail: string, password: string) => void
 }
 
-type SignInProps = DispatchProps;
+type StateProps = {
+    authState: AuthState;
+}
 
-class SignIn extends Component<SignInProps, SignInState> {
+type SignInProps = DispatchProps & StateProps;
 
-    state: SignInState = {
-        loading: false,
-        error: false,
-        errorMessage: null
-    };
-
-    authService: AuthService = new AuthService();
+class SignIn extends Component<SignInProps> {
 
     onSubmit = (values: any): void => {
-        this.setState({
-            loading: true,
-            error: false,
-            errorMessage: null
-        });
-
-        this.authService.signIn(values.loginOrEmail, values.password)
-            .then(data => {
-                localStorage.setItem(ACCESS_TOKEN, data.token);
-                this.props.setAuth(true);
-                this.setState({...this.state, loading: false});
-            })
-            .catch(error => {
-                this.setState({
-                    loading: false,
-                    error: true,
-                    errorMessage: "Не верный логин или пароль"
-                });
-            });
+        this.props.authorize(values.loginOrEmail, values.password);
     };
 
     render(): React.ReactNode {
         return (
             <div className="signInContainer">
                 <Typography.Title>Вход</Typography.Title>
-                <Spin indicator={<LoadingOutlined style={{fontSize: 30}} spin/>}
+                <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
                       size="large"
-                      spinning={this.state.loading}>
+                      spinning={this.props.authState.loading}>
 
                     <Card>
                         <SignInForm onSubmit={this.onSubmit}
-                                    error={this.state.error}
-                                    errorMessage={this.state.errorMessage}/>
+                                    error={this.props.authState.authError}
+                                    errorMessage={this.props.authState.authErrorMessage}/>
                     </Card>
                 </Spin>
             </div>
@@ -72,8 +43,12 @@ class SignIn extends Component<SignInProps, SignInState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-    setAuth: (auth: boolean) => dispatch(setAuth(auth))
+const mapStateToProps = (state: ApplicationState): StateProps => ({
+    authState: state.authState
 });
 
-export default connect(null, mapDispatchToProps)(SignIn);
+const mapDispatchToProps = (dispatch: any): DispatchProps => ({
+    authorize: (loginOrEmail: string, password: string) => dispatch(authorize(loginOrEmail, password))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
