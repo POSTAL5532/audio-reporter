@@ -15,7 +15,7 @@ const loginOrEmailRules: Rule[] = [
 
 const passwordRules: Rule[] = [
     {required: true, message: 'Поле обязательно для заполнения'},
-    {pattern: /^[a-zA-Z0-9]{5,50}$/, message: "Пароль может содержать от 5 до 50 латинских символов и цифр"}
+    {pattern: /^[a-zA-Z0-9]{5,50}$/, message: "Некорректное значение"}
 ];
 
 type SignInFormProps = {

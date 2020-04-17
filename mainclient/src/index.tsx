@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './container/application/App';
 import {Router} from "react-router-dom";
 import 'antd/dist/antd.css';
 import {Provider} from "react-redux";

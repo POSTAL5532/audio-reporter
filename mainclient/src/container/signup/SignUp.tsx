@@ -1,80 +1,54 @@
 import React, {Component} from 'react';
-import {Button, Card, Form, Input, Typography} from "antd";
+import {Card, Spin, Typography} from "antd";
 import "./SignUp.css";
-import {Link} from "react-router-dom";
-import {Rule} from "antd/lib/form";
+import SignUpForm from "./SignUpForm";
+import {AuthState} from "../../store/auth/types";
+import {ApplicationState} from "../../configureStore";
+import {register} from "../../store/auth/actions";
+import {connect} from "react-redux";
+import {LoadingOutlined} from "@ant-design/icons/lib";
 
-const layout = {
-    labelCol: {span: 5},
-    wrapperCol: {span: 19}
-};
+type DispatchProps = {
+    register: (email: string, login: string, password: string, confirmPassword: string) => void
+}
 
-const loginRules: Rule[] = [
-    {required: true, message: 'Поле обязательно для заполнения'},
-    {pattern: /^[a-zA-Z0-9]{5,50}$/, message: "Пароль может содержать от 5 до 100 латинских символов и цифр"}
-];
+type StateProps = {
+    authState: AuthState;
+}
 
-const emailRules: Rule[] = [
-    {required: true, message: 'Поле обязательно для заполнения'},
-    {type: 'email', message: "Значение должно быть email"}
-];
+type SignUpProps = DispatchProps & StateProps;
 
-const passwordRules: Rule[] = [
-    {required: true, message: 'Поле обязательно для заполнения'},
-    {pattern: /^[a-zA-Z0-9]{5,50}$/, message: "Пароль может содержать от 5 до 50 латинских символов и цифр"}
-];
+class SignUp extends Component<SignUpProps> {
 
-class SignUp extends Component {
+    onSubmit = (values: any): void => {
+        this.props.register(values.email, values.login, values.password, values.confirmPassword);
+    };
 
     render(): React.ReactNode {
         return (
             <div className="signUpContainer">
                 <Typography.Title>Регистрация</Typography.Title>
-                <Card>
-                    <Form {...layout} id="signUpForm">
-                        <Form.Item
-                            label="Email"
-                            name="email"
-                            rules={emailRules}
-                            validateTrigger="onBlur">
-                            <Input placeholder="email"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Логин"
-                            name="login"
-                            rules={loginRules}
-                            validateTrigger="onBlur">
-                            <Input placeholder="логин"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Пароль"
-                            name="password"
-                            rules={passwordRules}
-                            validateTrigger="onBlur">
-                            <Input.Password placeholder="пароль"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Пароль"
-                            name="confirmPassword"
-                            dependencies={['password']}
-                            rules={passwordRules}
-                            validateTrigger="onBlur">
-                            <Input.Password placeholder="подтвердить пароль"/>
-                        </Form.Item>
-                    </Form>
-
-                    <Form.Item htmlFor="signForm">
-                        <Button block type="primary" form="signUpForm" htmlType="submit">Регистрация</Button>
-                    </Form.Item>
-
-                    <p>Уже зарегестрирован? <Link to="/signin">Войти</Link></p>
-                </Card>
+                <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
+                      size="large"
+                      spinning={this.props.authState.loading}>
+                    <Card>
+                        <SignUpForm onSubmit={this.onSubmit}
+                                    error={this.props.authState.authError}
+                                    errorMessage={this.props.authState.authErrorMessage}/>
+                    </Card>
+                </Spin>
             </div>
         );
     }
 }
 
-export default SignUp;
+const mapStateToProps = (state: ApplicationState): StateProps => ({
+    authState: state.authState
+});
+
+const mapDispatchToProps = (dispatch: any): DispatchProps => ({
+    register: (email: string, login: string, password: string, confirmPassword: string) =>
+        dispatch(register(email, login, password, confirmPassword))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

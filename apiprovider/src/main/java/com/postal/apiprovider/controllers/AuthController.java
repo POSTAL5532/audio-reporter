@@ -76,12 +76,8 @@ public class AuthController {
         user.setLogin(signUpRequest.getLogin());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-        user = userService.register(user);
+        userService.register(user);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/api/users/{login}")
-                .buildAndExpand(user.getLogin()).toUri();
-
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+        return ResponseEntity.ok(new ApiResponse(true, "User registered successfully"));
     }
 }
