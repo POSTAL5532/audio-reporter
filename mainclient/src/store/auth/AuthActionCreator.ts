@@ -2,7 +2,7 @@ import {
     AuthActionTypes,
     SetAuthErrorAction,
     SetAuthLoadingAction,
-    SetAuthStatusAction,
+    SetAuthStatusAction, SetRegErrorAction,
 } from "./types";
 
 export default class AuthActionCreator {
@@ -26,6 +26,14 @@ export default class AuthActionCreator {
             type: AuthActionTypes.SET_AUTH_ERROR,
             authError: authError,
             authErrorMessage: authErrorMessage
+        };
+    }
+
+    public static setRegErrorAction(regError: boolean, regErrorMessage: string): SetRegErrorAction {
+        return {
+            type: AuthActionTypes.SET_REG_ERROR,
+            regError: regError,
+            regErrorMessage: regErrorMessage
         };
     }
 }

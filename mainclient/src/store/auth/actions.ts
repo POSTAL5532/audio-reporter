@@ -42,7 +42,7 @@ export const authorize = (loginOrEmail: string, password: string): AuthThunkActi
 };
 
 export const register = (email: string, login: string, password: string, confirmPassword: string): AuthThunkAction => dispatch => {
-    dispatch(AuthActionCreator.setAuthErrorAction(false, null));
+    dispatch(AuthActionCreator.setRegErrorAction(false, null));
     dispatch(AuthActionCreator.setAuthLoadingAction(true));
 
     new AuthService().signUp(email, login, password, confirmPassword)
@@ -59,7 +59,7 @@ export const register = (email: string, login: string, password: string, confirm
                 errorMessage = "Непредвиденная ошибка";
             }
 
-            dispatch(AuthActionCreator.setAuthErrorAction(true, errorMessage));
+            dispatch(AuthActionCreator.setRegErrorAction(true, errorMessage));
             dispatch(AuthActionCreator.setAuthLoadingAction(false));
         });
 };

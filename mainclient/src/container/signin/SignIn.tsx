@@ -7,9 +7,11 @@ import {authorize} from "../../store/auth/actions";
 import {connect} from "react-redux";
 import {ApplicationState} from "../../configureStore";
 import {AuthState} from "../../store/auth/types";
+import AuthActionCreator from "../../store/auth/AuthActionCreator";
 
 type DispatchProps = {
-    authorize: (loginOrEmail: string, password: string) => void
+    authorize: (loginOrEmail: string, password: string) => void;
+    clearSignInError: () => void;
 }
 
 type StateProps = {
@@ -19,6 +21,10 @@ type StateProps = {
 type SignInProps = DispatchProps & StateProps;
 
 class SignIn extends Component<SignInProps> {
+
+    componentDidMount(): void {
+        this.props.clearSignInError();
+    }
 
     onSubmit = (values: any): void => {
         this.props.authorize(values.loginOrEmail, values.password);
@@ -48,7 +54,8 @@ const mapStateToProps = (state: ApplicationState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-    authorize: (loginOrEmail: string, password: string) => dispatch(authorize(loginOrEmail, password))
+    authorize: (loginOrEmail: string, password: string) => dispatch(authorize(loginOrEmail, password)),
+    clearSignInError: () => dispatch(AuthActionCreator.setAuthErrorAction(false, null))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

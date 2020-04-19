@@ -5,12 +5,15 @@ export interface AuthState {
     readonly authStatus: boolean;
     readonly authError: boolean;
     readonly authErrorMessage: string;
+    readonly regError: boolean;
+    readonly regErrorMessage: string;
 }
 
 export enum AuthActionTypes {
     SET_AUTH_STATUS = "SET_AUTH_STATUS",
     SET_AUTH_LOADING = "SET_AUTH_LOADING",
-    SET_AUTH_ERROR = "SET_AUTH_ERROR"
+    SET_AUTH_ERROR = "SET_AUTH_ERROR",
+    SET_REG_ERROR = "SET_REG_ERROR"
 }
 
 export interface SetAuthStatusAction extends Action<AuthActionTypes> {
@@ -29,7 +32,14 @@ export interface SetAuthErrorAction extends Action<AuthActionTypes> {
     readonly authErrorMessage: string;
 }
 
+export interface SetRegErrorAction extends Action<AuthActionTypes> {
+    readonly type: AuthActionTypes.SET_REG_ERROR;
+    readonly regError: boolean;
+    readonly regErrorMessage: string;
+}
+
 export type AuthAction =
     SetAuthStatusAction
     | SetAuthLoadingAction
-    | SetAuthErrorAction;
+    | SetAuthErrorAction
+    | SetRegErrorAction;

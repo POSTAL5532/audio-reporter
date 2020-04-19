@@ -5,7 +5,9 @@ const initialAuthState: AuthState = {
     loading: false,
     authStatus: !!localStorage.getItem(ACCESS_TOKEN),
     authError: false,
-    authErrorMessage: null
+    authErrorMessage: null,
+    regError: false,
+    regErrorMessage: null
 };
 
 export const authReducer = (state: AuthState = initialAuthState, action: AuthAction): AuthState => {
@@ -25,6 +27,12 @@ export const authReducer = (state: AuthState = initialAuthState, action: AuthAct
                 ...state,
                 authError: action.authError,
                 authErrorMessage: action.authErrorMessage
+            };
+        case AuthActionTypes.SET_REG_ERROR:
+            return {
+                ...state,
+                regError: action.regError,
+                regErrorMessage: action.regErrorMessage
             };
         default:
             return state;
