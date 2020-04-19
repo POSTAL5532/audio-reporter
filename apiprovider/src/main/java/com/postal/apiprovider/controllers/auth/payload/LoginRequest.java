@@ -1,4 +1,4 @@
-package com.postal.apiprovider.payload;
+package com.postal.apiprovider.controllers.auth.payload;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;

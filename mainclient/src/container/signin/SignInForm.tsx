@@ -1,22 +1,12 @@
 import React, {Component} from 'react';
 import {Alert, Button, Form, Input} from "antd";
-import {Rule} from "antd/lib/form";
 import {Link} from "react-router-dom";
+import UserDataRule from "../../secure/UserDataRule";
 
 const layout = {
     labelCol: {span: 7},
     wrapperCol: {span: 17}
 };
-
-const loginOrEmailRules: Rule[] = [
-    {required: true, message: 'Поле обязательно для заполнения'},
-    {pattern: /^[a-zA-Z0-9._@-]{2,100}$/, message: "Некорректное значение"}
-];
-
-const passwordRules: Rule[] = [
-    {required: true, message: 'Поле обязательно для заполнения'},
-    {pattern: /^[a-zA-Z0-9]{5,50}$/, message: "Некорректное значение"}
-];
 
 type SignInFormProps = {
     error: boolean;
@@ -33,7 +23,7 @@ class SignInForm extends Component<SignInFormProps> {
                     <Form.Item
                         label="Логин или Email"
                         name="loginOrEmail"
-                        rules={loginOrEmailRules}
+                        rules={UserDataRule.loginOrEmailRules()}
                         validateTrigger="onBlur">
                         <Input placeholder="логин или email"/>
                     </Form.Item>
@@ -41,7 +31,7 @@ class SignInForm extends Component<SignInFormProps> {
                     <Form.Item
                         label="Пароль"
                         name="password"
-                        rules={passwordRules}
+                        rules={UserDataRule.passwordRules()}
                         validateTrigger="onBlur">
                         <Input.Password placeholder="пароль"/>
                     </Form.Item>

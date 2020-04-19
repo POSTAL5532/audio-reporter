@@ -57,7 +57,15 @@ public class UserService {
         return this.userRepository.existsByLogin(login);
     }
 
+    public Boolean existByLoginExcludeCurrentLogin(String login, String currentUserLogin) {
+        return this.userRepository.existsByLoginAndLoginNot(login, currentUserLogin);
+    }
+
     public Boolean existByEmail(String email) {
         return this.userRepository.existsByEmail(email);
+    }
+
+    public Boolean existByEmailExcludeCurrentEmail(String email, String currentUserEmail) {
+        return this.userRepository.existsByEmailAndEmailNot(email, currentUserEmail);
     }
 }

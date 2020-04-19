@@ -6,11 +6,9 @@ import {ApplicationState} from "../../configureStore";
 import {loadUser} from "../../store/user/actions";
 import {connect} from "react-redux";
 import {AudioOutlined, LoadingOutlined} from "@ant-design/icons/lib";
-import {deAuthorize} from "../../store/auth/actions";
 
 type DispatchProps = {
     loadUser: () => void;
-    deAuthorize: () => void;
 }
 
 type StateProps = {
@@ -53,7 +51,7 @@ class AppHeader extends Component<HeaderProps> {
                                 <Descriptions.Item label="Виджеты">33</Descriptions.Item>
                                 <Descriptions.Item label="Новые сообщения">44</Descriptions.Item>
                                 <Descriptions.Item label="Статус">
-                                    <Tag color="blue">{user ? user.status : "..."}</Tag>
+                                    <Tag color="blue">{user ? user.userStatus : "..."}</Tag>
                                 </Descriptions.Item>
                             </Descriptions>
                         </Spin>
@@ -71,8 +69,7 @@ const mapStateToProps = (state: ApplicationState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-    loadUser: () => dispatch(loadUser()),
-    deAuthorize: () => dispatch(deAuthorize())
+    loadUser: () => dispatch(loadUser())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppHeader);

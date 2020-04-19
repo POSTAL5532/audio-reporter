@@ -1,4 +1,8 @@
 import {ACCESS_TOKEN, API_URL} from "../config";
+import {SecurityErrorMessage} from "../secure/SecurityErrorMessage";
+import {HttpStatusCode} from "./HttpStatusCode";
+import axios, {AxiosError, AxiosResponse} from "axios";
+import {deAuthorize} from "../store/auth/actions";
 
 /**
  * Клиент для выполнения http-запросов к API
@@ -7,26 +11,26 @@ import {ACCESS_TOKEN, API_URL} from "../config";
  * */
 export default class Client {
 
-    private executeRequest(url: string, options: any): Promise<any> {
-        const headers = new Headers({
-            'Content-Type': 'application/json'
-        });
+    private setHeaders(): any {
+        const token = localStorage.getItem(ACCESS_TOKEN);
 
-        if (localStorage.getItem(ACCESS_TOKEN)) {
-            headers.append('Authorization', `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`);
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${localStorage.getItem(ACCESS_TOKEN)}` : undefined
+        };
+    }
+
+    private errorHandler = (error: AxiosError): Promise<any> => {
+        const errorResponse: AxiosResponse = error.response;
+
+        if (!errorResponse || errorResponse.status >= HttpStatusCode.INTERNAL_SERVER_ERROR) {
+            deAuthorize("/error");
+        } else if (errorResponse.status === HttpStatusCode.FORBIDDEN && errorResponse.data.message === SecurityErrorMessage.INSUFFICIENT_AUTH) {
+            deAuthorize();
         }
 
-        const requestOptions = Object.assign({}, {headers: headers}, options);
-
-        return fetch(url, requestOptions)
-            .then(response => response.json().then(json => {
-                    if (!response.ok) {
-                        return Promise.reject(json)
-                    }
-                    return json;
-                })
-            );
-    }
+        return Promise.reject(errorResponse);
+    };
 
     /**
      * Выполняет GET-запрос по URL
@@ -35,7 +39,12 @@ export default class Client {
      * @return объект ответа
      * */
     public executeGetRequest(url: string): Promise<any> {
-        return this.executeRequest(`${API_URL}${url}`, {method: "GET"});
+        return axios.get(`${API_URL}${url}`, {headers: this.setHeaders()})
+            .then((response: AxiosResponse) => {
+                return response.data;
+            })
+            .catch(this.errorHandler);
+
     };
 
     /**
@@ -45,13 +54,12 @@ export default class Client {
      * @param body тело запроса (JSON)
      * @return объект ответа
      * */
-    public executePostRequest(url: string, body: string): Promise<any> {
-        const requestOptions = {
-            method: 'POST',
-            body: body
-        };
-
-        return this.executeRequest(`${API_URL}${url}`, requestOptions);
+    public executePostRequest(url: string, body: any): Promise<any> {
+        return axios.post(`${API_URL}${url}`, body, {headers: this.setHeaders()})
+            .then((response: AxiosResponse) => {
+                return response.data;
+            })
+            .catch(this.errorHandler);
     };
 
     /**
@@ -62,12 +70,7 @@ export default class Client {
      * @return объект ответа
      * */
     public executePutRequest(url: string, body: string): Promise<any> {
-        const requestOptions = {
-            method: 'PUT',
-            body: body
-        };
-
-        return this.executeRequest(`${API_URL}${url}`, requestOptions);
+        return null;
     };
 
     /**
@@ -76,6 +79,5 @@ export default class Client {
      * @param url URL
      * */
     public async executeDeleteRequest(url: string) {
-        return this.executeRequest(`${API_URL}${url}`, {method: "DELETE"});
     };
 }

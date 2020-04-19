@@ -8,17 +8,12 @@ import {
 } from "@ant-design/icons/lib";
 import {Link} from "react-router-dom";
 import "./SideMenu.css"
-import {connect} from "react-redux";
 import {deAuthorize} from "../../store/auth/actions";
 
 const {Sider} = Layout;
 const {SubMenu} = Menu;
 
-type DispatchProps = {
-    deAuthorize: () => void;
-}
-
-class SideMenu extends Component<DispatchProps> {
+class SideMenu extends Component {
     render(): React.ReactNode {
         return (
             <Sider style={{background: "white"}}>
@@ -40,7 +35,7 @@ class SideMenu extends Component<DispatchProps> {
                             <ControlOutlined/>
                             <Link to="/profile">Настройки</Link>
                         </Menu.Item>
-                        <Menu.Item key="4" onClick={this.props.deAuthorize}>
+                        <Menu.Item key="4" onClick={() => deAuthorize()}>
                             <ExportOutlined/>
                             <span>Выход</span>
                         </Menu.Item>
@@ -52,8 +47,4 @@ class SideMenu extends Component<DispatchProps> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-    deAuthorize: () => dispatch(deAuthorize())
-});
-
-export default connect(null, mapDispatchToProps)(SideMenu);
+export default SideMenu;

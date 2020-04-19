@@ -2,42 +2,15 @@ import React, {Component} from 'react';
 import {Alert, Button, Form, Input} from "antd";
 import {Rule} from "antd/lib/form";
 import {Link} from "react-router-dom";
-import UserService from "../../service/UserService";
-
-const userService: UserService = new UserService();
+import UserDataRule from "../../secure/UserDataRule";
 
 const layout = {
     labelCol: {span: 5},
     wrapperCol: {span: 19}
 };
 
-const loginRules: Rule[] = [
-    {required: true, message: 'Поле обязательно для заполнения'},
-    {pattern: /^[a-zA-Z0-9]{5,50}$/, message: "Пароль может содержать от 5 до 100 латинских символов и цифр"},
-    () => ({
-        validator(rule, value) {
-            return userService.checkLogin(value)
-                .then(() => Promise.resolve())
-                .catch(() => Promise.reject("Этот логин занят"));
-        }
-    })
-];
-
-const emailRules: Rule[] = [
-    {required: true, message: 'Поле обязательно для заполнения'},
-    {type: 'email', message: "Значение должно быть email"},
-    () => ({
-        validator(rule, value) {
-            return userService.checkEmail(value)
-                .then(() => Promise.resolve())
-                .catch(() => Promise.reject("Этот Email занят"));
-        }
-    })
-];
-
-const passwordRules: Rule[] = [
-    {required: true, message: 'Поле обязательно для заполнения'},
-    {pattern: /^[a-zA-Z0-9]{5,50}$/, message: "Пароль может содержать от 5 до 50 латинских символов и цифр"},
+export const passwordRules: Rule[] = [
+    ...UserDataRule.passwordRules(),
     ({getFieldValue}) => ({
         validator(rule, value) {
             if (!value || getFieldValue("password") === value) {
@@ -48,7 +21,7 @@ const passwordRules: Rule[] = [
     })
 ];
 
-type SignUpFormProps = {
+export type SignUpFormProps = {
     error: boolean;
     errorMessage: string;
     onSubmit: (values: any) => void;
@@ -63,7 +36,7 @@ class SignUpForm extends Component<SignUpFormProps> {
                     <Form.Item
                         label="Email"
                         name="email"
-                        rules={emailRules}
+                        rules={UserDataRule.emailRules("notConsideringUser")}
                         validateFirst={true}
                         validateTrigger="onBlur">
                         <Input placeholder="email"/>
@@ -72,7 +45,7 @@ class SignUpForm extends Component<SignUpFormProps> {
                     <Form.Item
                         label="Логин"
                         name="login"
-                        rules={loginRules}
+                        rules={UserDataRule.loginRules("notConsideringUser")}
                         validateFirst
                         validateTrigger="onBlur">
                         <Input placeholder="логин"/>

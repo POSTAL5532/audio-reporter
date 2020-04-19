@@ -92,7 +92,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !this.status.equals(UserStatus.UNACTIVE);
+        return !this.status.equals(UserStatus.DELETED);
     }
 
     @Override

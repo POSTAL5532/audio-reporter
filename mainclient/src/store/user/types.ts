@@ -4,7 +4,7 @@ export interface UserInfo {
     readonly login: string;
     readonly email: string;
     readonly regDate: string;
-    readonly status: string;
+    readonly userStatus: string;
 }
 
 export interface UserState {

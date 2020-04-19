@@ -1,9 +1,9 @@
-package com.postal.apiprovider.controllers;
+package com.postal.apiprovider.controllers.auth;
 
-import com.postal.apiprovider.payload.ApiResponse;
-import com.postal.apiprovider.payload.JwtAuthenticationResponse;
-import com.postal.apiprovider.payload.LoginRequest;
-import com.postal.apiprovider.payload.SignUpRequest;
+import com.postal.apiprovider.controllers.ApiResponse;
+import com.postal.apiprovider.controllers.auth.payload.JwtAuthenticationResponse;
+import com.postal.apiprovider.controllers.auth.payload.LoginRequest;
+import com.postal.apiprovider.controllers.auth.payload.SignUpRequest;
 import com.postal.apiprovider.security.JwtTokenProvider;
 import com.postal.apiprovider.services.UserService;
 import com.postal.dataprovider.models.User;
@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 
 /**
  * @author SIE
@@ -44,7 +42,7 @@ public class AuthController {
     JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getLoginOrEmail(),

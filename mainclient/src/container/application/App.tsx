@@ -10,6 +10,7 @@ import Profile from "../profile/Profile";
 import {Layout} from "antd";
 import AppHeader from "../../component/appheader/AppHeader";
 import SideMenu from "../../component/side/SideMenu";
+import ErrorPage from "../ErrorPage";
 import "./App.css";
 
 const {Content} = Layout;
@@ -36,16 +37,17 @@ class App extends Component<StateProps> {
                 <Route path="/signup" exact>
                     {auth ? <Redirect to="/"/> : <SignUp/>}
                 </Route>
+                <Route path="/error" exact component={ErrorPage}/>
 
-                {auth
-                    ? <Layout>
-                        <SideMenu/>
-                        <Content style={{background: "white", padding: "0 20px"}}>
-                            <AuthorizedRoute exact={true} path="/dashboard" component={<Dashboard/>}/>
-                            <AuthorizedRoute exact={true} path="/profile" component={<Profile/>}/>
-                        </Content>
-                    </Layout>
-                    : null}
+                <Layout>
+                    {auth
+                        ? <SideMenu/>
+                        : null}
+                    <Content style={{background: "white", padding: "0 20px"}}>
+                        <AuthorizedRoute exact={true} path="/dashboard" component={<Dashboard/>}/>
+                        <AuthorizedRoute exact={true} path="/profile" component={<Profile/>}/>
+                    </Content>
+                </Layout>
             </>
         );
     }

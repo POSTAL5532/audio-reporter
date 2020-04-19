@@ -12,21 +12,17 @@ export default class AuthService {
             password: password
         };
 
-        return this.client.executePostRequest(
-            `${AuthService.AUTH_PATH}/signin`,
-            JSON.stringify(loginRequest));
+        return this.client.executePostRequest(`${AuthService.AUTH_PATH}/signin`, loginRequest);
     }
 
     public signUp(email: string, login: string, password: string, confirmPassword: string): Promise<any> {
-        const signUprequest = {
+        const signUpRequest = {
             email: email,
             login: login,
             password: password,
             confirmPassword: confirmPassword
         };
 
-        return this.client.executePostRequest(
-            `${AuthService.AUTH_PATH}/signup`,
-            JSON.stringify(signUprequest));
+        return this.client.executePostRequest(`${AuthService.AUTH_PATH}/signup`, signUpRequest);
     }
 }

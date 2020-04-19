@@ -1,4 +1,4 @@
-package com.postal.apiprovider.payload;
+package com.postal.apiprovider.controllers;
 
 /**
  * @author SIE

@@ -1,5 +1,6 @@
 import Client from "./Client";
 import {UserInfo} from "../store/user/types";
+import {AvailabilityCheckType} from "../secure/UserDataRule";
 
 export default class UserService {
 
@@ -11,15 +12,15 @@ export default class UserService {
         return this.client.executeGetRequest(UserService.USER_PATH);
     }
 
-    public checkEmail(email: string): Promise<void> {
-        return this.client.executeGetRequest(`${UserService.USER_PATH}/checkemailavailability?email=${email}`)
+    public checkEmailAvailability(email: string, availabilityCheckType: AvailabilityCheckType): Promise<void> {
+        return this.client.executeGetRequest(`${UserService.USER_PATH}/checkemailavailability?email=${email}&checkType=${availabilityCheckType}`)
             .then(data =>
                 (data.success ? Promise.resolve() : Promise.reject())
             );
     }
 
-    public checkLogin(login: string): Promise<void> {
-        return this.client.executeGetRequest(`${UserService.USER_PATH}/checkloginavailability?login=${login}`)
+    public checkLoginAvailability(login: string, availabilityCheckType: AvailabilityCheckType): Promise<void> {
+        return this.client.executeGetRequest(`${UserService.USER_PATH}/checkloginavailability?login=${login}&checkType=${availabilityCheckType}`)
             .then(data =>
                 (data.success ? Promise.resolve() : Promise.reject())
             );

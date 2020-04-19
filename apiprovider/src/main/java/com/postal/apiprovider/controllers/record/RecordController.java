@@ -1,4 +1,4 @@
-package com.postal.apiprovider.controllers;
+package com.postal.apiprovider.controllers.record;
 
 import com.postal.apiprovider.services.RecordService;
 import com.postal.dataprovider.models.Record;
