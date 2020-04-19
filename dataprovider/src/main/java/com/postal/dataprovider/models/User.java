@@ -22,6 +22,9 @@ public class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private UserConfirmStatus confirmStatus;
+
     public User() {
         super();
     }
@@ -74,15 +77,24 @@ public class User extends AbstractEntity {
         this.status = status;
     }
 
+    public UserConfirmStatus getConfirmStatus() {
+        return confirmStatus;
+    }
+
+    public void setConfirmStatus(UserConfirmStatus confirmStatus) {
+        this.confirmStatus = confirmStatus;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "name='" + login + '\'' +
+                "login='" + login + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", regDate=" + regDate +
                 ", status=" + status +
+                ", confirmStatus=" + confirmStatus +
                 ", id='" + id + '\'' +
                 '}';
     }

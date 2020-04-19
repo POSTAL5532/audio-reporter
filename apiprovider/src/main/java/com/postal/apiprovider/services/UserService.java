@@ -1,6 +1,7 @@
 package com.postal.apiprovider.services;
 
 import com.postal.dataprovider.models.User;
+import com.postal.dataprovider.models.UserConfirmStatus;
 import com.postal.dataprovider.models.UserRole;
 import com.postal.dataprovider.models.UserStatus;
 import com.postal.dataprovider.repositories.UserRepository;
@@ -44,6 +45,7 @@ public class UserService {
         newUser.setRole(UserRole.ROLE_USER);
         newUser.setRegDate(Date.valueOf(LocalDate.now()));
         newUser.setStatus(UserStatus.ACTIVE);
+        newUser.setConfirmStatus(UserConfirmStatus.UNCONFIRMED);
 
         return this.userRepository.save(newUser);
     }

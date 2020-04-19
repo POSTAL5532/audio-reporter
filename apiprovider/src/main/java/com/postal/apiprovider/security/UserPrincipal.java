@@ -2,6 +2,7 @@ package com.postal.apiprovider.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.postal.dataprovider.models.User;
+import com.postal.dataprovider.models.UserConfirmStatus;
 import com.postal.dataprovider.models.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,24 +33,23 @@ public class UserPrincipal implements UserDetails {
 
     private UserStatus status;
 
+    private UserConfirmStatus confirmStatus;
+
     public static UserPrincipal create(User user) {
         return new UserPrincipal(
-                user.getId(),
-                user.getLogin(),
-                user.getEmail(),
-                user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name())),
-                user.getStatus()
+                user,
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()))
         );
     }
 
-    public UserPrincipal(String id, String login, String email, String password, Collection<? extends GrantedAuthority> authorities, UserStatus status) {
-        this.id = id;
-        this.login = login;
-        this.email = email;
-        this.password = password;
+    public UserPrincipal(User user, Collection<? extends GrantedAuthority> authorities) {
+        this.id = user.getId();
+        this.login = user.getLogin();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.status = user.getStatus();
+        this.confirmStatus = user.getConfirmStatus();
         this.authorities = authorities;
-        this.status = status;
     }
 
     public String getId() {

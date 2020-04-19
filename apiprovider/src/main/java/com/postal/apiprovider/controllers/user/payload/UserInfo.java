@@ -1,7 +1,7 @@
 package com.postal.apiprovider.controllers.user.payload;
 
 import com.postal.dataprovider.models.User;
-import com.postal.dataprovider.models.UserStatus;
+import com.postal.dataprovider.models.UserConfirmStatus;
 
 import java.time.LocalDate;
 
@@ -16,13 +16,13 @@ public class UserInfo {
 
     private LocalDate regDate;
 
-    private UserStatus userStatus;
+    private UserConfirmStatus confirmStatus;
 
     public UserInfo(User user) {
         this.login = user.getLogin();
         this.email = user.getEmail();
         this.regDate = user.getRegDate().toLocalDate();
-        this.userStatus = user.getStatus();
+        this.confirmStatus = user.getConfirmStatus();
     }
 
     public String getLogin() {
@@ -49,11 +49,11 @@ public class UserInfo {
         this.regDate = regDate;
     }
 
-    public UserStatus getUserStatus() {
-        return userStatus;
+    public UserConfirmStatus getConfirmStatus() {
+        return confirmStatus;
     }
 
-    public void setUserStatus(UserStatus status) {
-        this.userStatus = status;
+    public void setConfirmStatus(UserConfirmStatus confirmStatus) {
+        this.confirmStatus = confirmStatus;
     }
 }
