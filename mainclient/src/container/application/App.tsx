@@ -12,6 +12,7 @@ import AppHeader from "../../component/appheader/AppHeader";
 import SideMenu from "../../component/side/SideMenu";
 import ErrorPage from "../ErrorPage";
 import "./App.css";
+import HeadUserCard from "../../component/appheader/HeadUserCard";
 
 const {Content} = Layout;
 
@@ -27,6 +28,10 @@ class App extends Component<StateProps> {
         return (
             <>
                 <AppHeader/>
+
+                {auth
+                    ? <HeadUserCard/>
+                    : null}
 
                 <Route path="/" exact>
                     <Redirect to={auth ? "/dashboard" : "/signin"}/>

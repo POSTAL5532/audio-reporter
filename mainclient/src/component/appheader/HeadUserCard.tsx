@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Card, Descriptions, Spin, Tag} from "antd";
-import {AuthState} from "../../store/auth/types";
 import {UserState} from "../../store/user/types";
 import {ApplicationState} from "../../configureStore";
 import {loadUser} from "../../store/user/actions";
@@ -13,7 +12,6 @@ type DispatchProps = {
 
 type StateProps = {
     userState: UserState;
-    authState: AuthState;
 }
 
 type HeaderProps = DispatchProps & StateProps;
@@ -21,22 +19,14 @@ type HeaderProps = DispatchProps & StateProps;
 class HeadUserCard extends Component<HeaderProps> {
 
     componentDidMount(): void {
-        if (this.props.authState.authStatus) {
-            this.props.loadUser();
-        }
-    }
-
-    UNSAFE_componentWillUpdate(nextProps: Readonly<DispatchProps & StateProps>): void {
-        if (nextProps !== this.props && nextProps.authState.authStatus !== this.props.authState.authStatus) {
-            this.props.loadUser();
-        }
+        this.props.loadUser();
     }
 
 
     render(): React.ReactNode {
-        const {authState: {authStatus}, userState: {user, loading}} = this.props;
-        return (authStatus
-            ? <Card>
+        const {userState: {user, loading}} = this.props;
+        return (
+            <Card style={{marginBottom: 30}}>
                 <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
                       size="large"
                       spinning={loading || !user}>
@@ -52,13 +42,12 @@ class HeadUserCard extends Component<HeaderProps> {
 
                 </Spin>
             </Card>
-            : null);
+        );
     }
 }
 
 const mapStateToProps = (state: ApplicationState): StateProps => ({
-    userState: state.userState,
-    authState: state.authState
+    userState: state.userState
 });
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
