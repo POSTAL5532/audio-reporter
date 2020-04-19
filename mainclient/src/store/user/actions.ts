@@ -11,7 +11,7 @@ export const loadUser = (): UserThunkAction => dispatch => {
     dispatch(UserActionCreator.setUserLoadingAction(true));
 
     userService.getUser().then(data => {
-        dispatch(UserActionCreator.setUserLoadingAction(false));
         dispatch(UserActionCreator.setUserAction(data));
+        dispatch(UserActionCreator.setUserLoadingAction(false));
     });
 };
