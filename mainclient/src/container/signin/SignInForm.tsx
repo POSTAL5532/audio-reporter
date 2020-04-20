@@ -2,11 +2,7 @@ import React, {Component} from 'react';
 import {Alert, Button, Form, Input} from "antd";
 import {Link} from "react-router-dom";
 import UserDataRule from "../../secure/UserDataRule";
-
-const layout = {
-    labelCol: {span: 7},
-    wrapperCol: {span: 17}
-};
+import {LockOutlined, UserOutlined} from "@ant-design/icons/lib";
 
 type SignInFormProps = {
     error: boolean;
@@ -19,21 +15,19 @@ class SignInForm extends Component<SignInFormProps> {
     render(): React.ReactNode {
         return (
             <>
-                <Form {...layout} id="signInForm" onFinish={this.props.onSubmit}>
+                <Form id="signInForm" size="large" onFinish={this.props.onSubmit}>
                     <Form.Item
-                        label="Логин или Email"
                         name="loginOrEmail"
                         rules={UserDataRule.loginOrEmailRules()}
                         validateTrigger="onBlur">
-                        <Input placeholder="логин или email"/>
+                        <Input prefix={<UserOutlined />} placeholder="Логин или email"/>
                     </Form.Item>
 
                     <Form.Item
-                        label="Пароль"
                         name="password"
                         rules={UserDataRule.passwordRules()}
                         validateTrigger="onBlur">
-                        <Input.Password placeholder="пароль"/>
+                        <Input.Password prefix={<LockOutlined/>} placeholder="Пароль"/>
                     </Form.Item>
                 </Form>
 
@@ -44,7 +38,7 @@ class SignInForm extends Component<SignInFormProps> {
                 }
 
                 <Form.Item htmlFor="signForm">
-                    <Button block type="primary" form="signInForm" htmlType="submit">Войти</Button>
+                    <Button block type="primary" form="signInForm" htmlType="submit" size="large">Войти</Button>
                 </Form.Item>
 
                 <p>Нету аккаунта? <Link to="/signup">Зарегестрироваться</Link></p>

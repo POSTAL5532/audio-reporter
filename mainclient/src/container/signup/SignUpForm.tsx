@@ -3,11 +3,7 @@ import {Alert, Button, Form, Input} from "antd";
 import {Rule} from "antd/lib/form";
 import {Link} from "react-router-dom";
 import UserDataRule from "../../secure/UserDataRule";
-
-const layout = {
-    labelCol: {span: 5},
-    wrapperCol: {span: 19}
-};
+import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons/lib";
 
 export const passwordRules: Rule[] = [
     ...UserDataRule.passwordRules(),
@@ -32,40 +28,36 @@ class SignUpForm extends Component<SignUpFormProps> {
     render(): React.ReactNode {
         return (
             <>
-                <Form {...layout} id="signUpForm" onFinish={this.props.onSubmit}>
+                <Form id="signUpForm" size="large" onFinish={this.props.onSubmit}>
                     <Form.Item
-                        label="Email"
                         name="email"
                         rules={UserDataRule.emailRules("notConsideringUser")}
                         validateFirst={true}
                         validateTrigger="onBlur">
-                        <Input placeholder="email"/>
+                        <Input prefix={<MailOutlined/>} placeholder="Email"/>
                     </Form.Item>
 
                     <Form.Item
-                        label="Логин"
                         name="login"
                         rules={UserDataRule.loginRules("notConsideringUser")}
                         validateFirst
                         validateTrigger="onBlur">
-                        <Input placeholder="логин"/>
+                        <Input prefix={<UserOutlined />} placeholder="Логин"/>
                     </Form.Item>
 
                     <Form.Item
-                        label="Пароль"
                         name="password"
                         rules={passwordRules}
                         validateTrigger="onBlur">
-                        <Input.Password placeholder="пароль"/>
+                        <Input.Password prefix={<LockOutlined/>} placeholder="Пароль"/>
                     </Form.Item>
 
                     <Form.Item
-                        label="Пароль"
                         name="confirmPassword"
                         dependencies={['password']}
                         rules={passwordRules}
                         validateTrigger="onBlur">
-                        <Input.Password placeholder="подтвердить пароль"/>
+                        <Input.Password prefix={<LockOutlined/>} placeholder="Подтвердить пароль"/>
                     </Form.Item>
                 </Form>
 
@@ -76,7 +68,7 @@ class SignUpForm extends Component<SignUpFormProps> {
                 }
 
                 <Form.Item htmlFor="signUpForm">
-                    <Button block type="primary" form="signUpForm" htmlType="submit">Регистрация</Button>
+                    <Button block type="primary" form="signUpForm" htmlType="submit" size="large">Регистрация</Button>
                 </Form.Item>
 
                 <p>Уже зарегестрирован? <Link to="/signin">Войти</Link></p>
