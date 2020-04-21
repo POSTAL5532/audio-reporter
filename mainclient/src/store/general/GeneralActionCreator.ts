@@ -1,4 +1,4 @@
-import {GeneralActionTypes, SetGeneralLoadingAction} from "./types";
+import {GeneralActionTypes, SetGeneralLoadingAction} from "store/general/types";
 
 export default class GeneralActionCreator {
 

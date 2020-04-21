@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {AuthState} from "../../store/auth/types";
-import {ApplicationState} from "../../configureStore";
 import {connect} from "react-redux";
 import {Redirect, Route} from "react-router";
+import {AuthState} from "store/auth/types";
+import {ApplicationState} from "configureStore";
 
 type ComponentProps = {
     component: Component;

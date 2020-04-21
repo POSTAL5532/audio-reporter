@@ -1,12 +1,12 @@
 import {ThunkAction} from "redux-thunk";
-import {AuthAction, AuthState} from "./types";
-import AuthActionCreator from "./AuthActionCreator";
-import AuthService from "../../service/AuthService";
-import {ACCESS_TOKEN} from "../../config";
-import {browserHistory} from "../../index";
+import {AuthAction, AuthState} from "store/auth/types";
+import AuthActionCreator from "store/auth/AuthActionCreator";
+import AuthService from "service/AuthService";
+import {ACCESS_TOKEN} from "config";
+import {browserHistory} from "index";
 import {message} from "antd";
-import {SecurityErrorMessage} from "../../secure/SecurityErrorMessage";
-import {HttpStatusCode} from "../../service/HttpStatusCode";
+import {SecurityErrorMessage} from "secure/SecurityErrorMessage";
+import {HttpStatusCode} from "service/HttpStatusCode";
 
 export type AuthThunkAction = ThunkAction<void, AuthState, unknown, AuthAction>;
 

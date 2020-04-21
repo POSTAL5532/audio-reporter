@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Card, Descriptions, Spin, Tag} from "antd";
-import {UserState} from "../../store/user/types";
-import {ApplicationState} from "../../configureStore";
-import {loadUser} from "../../store/user/actions";
 import {connect} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
+import {UserState} from "store/user/types";
+import {ApplicationState} from "configureStore";
+import {loadUser} from "store/user/actions";
 
 type DispatchProps = {
     loadUser: () => void;

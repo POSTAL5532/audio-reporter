@@ -1,6 +1,6 @@
-import Client from "./Client";
-import {UserInfo} from "../store/user/types";
-import {AvailabilityCheckType} from "../secure/UserDataRule";
+import Client from "service/Client";
+import {UserInfo} from "store/user/types";
+import {AvailabilityCheckType} from "secure/UserDataRule";
 
 export default class UserService {
 

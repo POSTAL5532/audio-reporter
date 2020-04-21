@@ -1,4 +1,4 @@
-import {UserAction, UserActionTypes, UserState} from "./types";
+import {UserAction, UserActionTypes, UserState} from "store/user/types";
 
 const initialUserState: UserState = {
     loading: false,

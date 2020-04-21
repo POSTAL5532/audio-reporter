@@ -1,6 +1,6 @@
-import DataRule from "./DataRule";
 import {Rule} from "antd/lib/form";
-import UserService from "../service/UserService";
+import DataRule from "secure/DataRule";
+import UserService from "service/UserService";
 
 export type AvailabilityCheckType = "consideringUser" | "notConsideringUser";
 

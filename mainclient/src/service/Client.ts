@@ -1,8 +1,8 @@
-import {ACCESS_TOKEN, API_URL} from "../config";
-import {SecurityErrorMessage} from "../secure/SecurityErrorMessage";
-import {HttpStatusCode} from "./HttpStatusCode";
 import axios, {AxiosError, AxiosResponse} from "axios";
-import {deAuthorize} from "../store/auth/actions";
+import {ACCESS_TOKEN, API_URL} from "config";
+import {SecurityErrorMessage} from "secure/SecurityErrorMessage";
+import {HttpStatusCode} from "service/HttpStatusCode";
+import {deAuthorize} from "store/auth/actions";
 
 /**
  * Клиент для выполнения http-запросов к API

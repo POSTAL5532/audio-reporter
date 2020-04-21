@@ -1,10 +1,10 @@
-import {AuthState} from "./store/auth/types";
+import {AuthState} from "store/auth/types";
 import {applyMiddleware, combineReducers, createStore, Reducer} from "redux";
-import {authReducer} from "./store/auth/reducer";
+import {authReducer} from "store/auth/reducer";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import {UserState} from "./store/user/types";
-import {userReducer} from "./store/user/reducer";
+import {UserState} from "store/user/types";
+import {userReducer} from "store/user/reducer";
 
 export interface ApplicationState {
     authState: AuthState;

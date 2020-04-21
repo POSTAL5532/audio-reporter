@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
-import SignIn from "../signin/SignIn";
-import {Redirect, Route} from "react-router";
-import SignUp from "../signup/SignUp";
-import {ApplicationState} from "../../configureStore";
-import {connect} from "react-redux";
-import AuthorizedRoute from "../../component/customrouter/AuthorizedRoute";
-import Dashboard from "../dashboard/Dashboard";
-import Profile from "../profile/Profile";
 import {Layout} from "antd";
-import AppHeader from "../../component/appheader/AppHeader";
-import SideMenu from "../../component/side/SideMenu";
-import ErrorPage from "../ErrorPage";
+import {connect} from "react-redux";
+import {Redirect, Route} from "react-router";
+import SignIn from "container/signin/SignIn";
+import SignUp from "container/signup/SignUp";
+import {ApplicationState} from "configureStore";
+import AuthorizedRoute from "component/customrouter/AuthorizedRoute";
+import Dashboard from "container/dashboard/Dashboard";
+import Profile from "container/profile/Profile";
+import AppHeader from "component/appheader/AppHeader";
+import SideMenu from "component/side/SideMenu";
+import ErrorPage from "container/ErrorPage";
+import HeadUserCard from "component/appheader/HeadUserCard";
 import "./App.css";
-import HeadUserCard from "../../component/appheader/HeadUserCard";
 
 const {Content} = Layout;
 

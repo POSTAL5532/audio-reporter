@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Card, Spin, Typography} from "antd";
-import "./SignUp.css";
-import SignUpForm from "./SignUpForm";
-import {AuthState} from "../../store/auth/types";
-import {ApplicationState} from "../../configureStore";
-import {register} from "../../store/auth/actions";
+import "container/signup/SignUp.css";
+import SignUpForm from "container/signup/SignUpForm";
+import {AuthState} from "store/auth/types";
+import {ApplicationState} from "configureStore";
+import {register} from "store/auth/actions";
 import {connect} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
-import AuthActionCreator from "../../store/auth/AuthActionCreator";
+import AuthActionCreator from "store/auth/AuthActionCreator";
 
 type DispatchProps = {
     register: (email: string, login: string, password: string, confirmPassword: string) => void;

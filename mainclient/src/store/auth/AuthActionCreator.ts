@@ -3,7 +3,7 @@ import {
     SetAuthErrorAction,
     SetAuthLoadingAction,
     SetAuthStatusAction, SetRegErrorAction,
-} from "./types";
+} from "store/auth/types";
 
 export default class AuthActionCreator {
 

@@ -1,14 +1,14 @@
 import React, {Component} from "react";
 import {Menu, Layout} from "antd";
+import {Link} from "react-router-dom";
 import {
     ControlOutlined,
     ExportOutlined,
     PieChartOutlined,
     UserOutlined
 } from "@ant-design/icons/lib";
-import {Link} from "react-router-dom";
-import "./SideMenu.css"
-import {deAuthorize} from "../../store/auth/actions";
+import {deAuthorize} from "store/auth/actions";
+import "component/side/SideMenu.css"
 
 const {Sider} = Layout;
 const {SubMenu} = Menu;

@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Card, Spin, Typography} from "antd";
-import "./SignIn.css";
-import {LoadingOutlined} from "@ant-design/icons/lib";
-import SignInForm from "./SignInForm";
-import {authorize} from "../../store/auth/actions";
 import {connect} from "react-redux";
-import {ApplicationState} from "../../configureStore";
-import {AuthState} from "../../store/auth/types";
-import AuthActionCreator from "../../store/auth/AuthActionCreator";
+import {LoadingOutlined} from "@ant-design/icons/lib";
+import SignInForm from "container/signin/SignInForm";
+import {authorize} from "store/auth/actions";
+import {ApplicationState} from "configureStore";
+import {AuthState} from "store/auth/types";
+import AuthActionCreator from "store/auth/AuthActionCreator";
+import "container/signin/SignIn.css";
 
 type DispatchProps = {
     authorize: (loginOrEmail: string, password: string) => void;

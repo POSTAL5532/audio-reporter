@@ -1,4 +1,4 @@
-import {GeneralAction, GeneralActionTypes, GeneralState} from "./types";
+import {GeneralAction, GeneralActionTypes, GeneralState} from "store/general/types";
 
 const initialGeneralState: GeneralState = {
     loading: false

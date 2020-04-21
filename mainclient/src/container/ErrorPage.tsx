@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Result} from "antd";
-import {browserHistory} from "../index";
+import {browserHistory} from "index";
 
 const ErrorPage = () => {
     return (

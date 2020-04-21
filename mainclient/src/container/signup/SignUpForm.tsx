@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Alert, Button, Form, Input} from "antd";
+import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons/lib";
 import {Rule} from "antd/lib/form";
 import {Link} from "react-router-dom";
-import UserDataRule from "../../secure/UserDataRule";
-import {LockOutlined, MailOutlined, UserOutlined} from "@ant-design/icons/lib";
+import UserDataRule from "secure/UserDataRule";
 
 export const passwordRules: Rule[] = [
     ...UserDataRule.passwordRules(),

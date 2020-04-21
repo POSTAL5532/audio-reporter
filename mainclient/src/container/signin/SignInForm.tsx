@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Alert, Button, Form, Input} from "antd";
 import {Link} from "react-router-dom";
-import UserDataRule from "../../secure/UserDataRule";
+import UserDataRule from "secure/UserDataRule";
 import {LockOutlined, UserOutlined} from "@ant-design/icons/lib";
 
 type SignInFormProps = {

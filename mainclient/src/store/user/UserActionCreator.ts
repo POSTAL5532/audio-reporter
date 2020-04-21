@@ -1,4 +1,4 @@
-import {SetUserAction, SetUserLoadingAction, UserActionTypes, UserInfo} from "./types";
+import {SetUserAction, SetUserLoadingAction, UserActionTypes, UserInfo} from "store/user/types";
 
 export default class UserActionCreator {
 
