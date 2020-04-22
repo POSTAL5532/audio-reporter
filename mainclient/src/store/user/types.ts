@@ -4,7 +4,7 @@ export interface UserInfo {
     readonly login: string;
     readonly email: string;
     readonly regDate: string;
-    readonly confirmStatus: string;
+    readonly confirmStatus: "CONFIRMED" | "CONFIRMED";
 }
 
 export interface UserState {

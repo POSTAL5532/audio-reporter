@@ -64,6 +64,8 @@ class PersonalDataForm extends Component<PersonalDataFormProps, PersonalDataForm
     };
 
     render(): React.ReactNode {
+        const {userInfo} = this.props;
+
         return (
             <Form id="personalDataForm"
                   size="middle"
@@ -94,7 +96,9 @@ class PersonalDataForm extends Component<PersonalDataFormProps, PersonalDataForm
                         </Form.Item>
                     </Col>
 
-                    <Col span={6}><Button block>Подтвердить</Button></Col>
+                    <Col span={6}>
+                        <Button block disabled={!userInfo || userInfo.confirmStatus === "CONFIRMED"}>Подтвердить</Button>
+                    </Col>
                 </Row>
 
                 {
