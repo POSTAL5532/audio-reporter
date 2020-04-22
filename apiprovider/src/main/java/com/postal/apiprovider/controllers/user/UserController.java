@@ -1,15 +1,20 @@
 package com.postal.apiprovider.controllers.user;
 
 import com.postal.apiprovider.controllers.ApiResponse;
+import com.postal.apiprovider.controllers.user.payload.EditPersonalDataRequest;
 import com.postal.apiprovider.controllers.user.payload.UserInfo;
+import com.postal.apiprovider.exception.BadRequestException;
 import com.postal.apiprovider.security.CurrentUser;
 import com.postal.apiprovider.security.UserPrincipal;
 import com.postal.apiprovider.services.UserService;
 import com.postal.dataprovider.models.User;
+import com.postal.dataprovider.models.UserConfirmStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/user")
@@ -53,7 +58,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> checkEmailAvailability(
             @CurrentUser UserPrincipal currentUser,
             @RequestParam String email,
-            @RequestParam(required = false) String checkType) {
+            @RequestParam String checkType) {
 
         boolean available = false;
 
@@ -66,5 +71,28 @@ public class UserController {
         return ResponseEntity.ok(
                 new ApiResponse(available, String.format("Email is %s available", (available ? "" : "not")))
         );
+    }
+
+    @PostMapping("/editpersonaldata")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public UserInfo editPersonalData(
+            @CurrentUser UserPrincipal currentUser,
+            @Valid @RequestBody EditPersonalDataRequest personalData) {
+
+        if (userService.existByLoginExcludeCurrentLogin(personalData.getLogin(), currentUser.getUsername())) {
+            throw new BadRequestException("Login is already taken!");
+        } else if (userService.existByEmailExcludeCurrentEmail(personalData.getEmail(), currentUser.getEmail())) {
+            throw new BadRequestException("Email is already taken!");
+        }
+
+        User user = userService.changeUserPersonalData(
+                currentUser.getId(), personalData.getLogin(), personalData.getEmail()
+        );
+
+        if (user.getConfirmStatus().equals(UserConfirmStatus.UNCONFIRMED)) {
+            //TODO sent Email point
+        }
+
+        return new UserInfo(user);
     }
 }

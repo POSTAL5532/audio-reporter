@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Card, Descriptions, Spin, Tag} from "antd";
+import {Card, Descriptions, Spin} from "antd";
 import {connect} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
 import {UserState} from "store/user/types";
-import {ApplicationState} from "configureStore";
+import {ApplicationState} from "store/configureStore";
 import {loadUser} from "store/user/actions";
+import UserConfirmStatusTag from "component/UserConfirmStatusTag";
 
 type DispatchProps = {
     loadUser: () => void;
@@ -24,19 +25,19 @@ class HeadUserCard extends Component<HeaderProps> {
 
 
     render(): React.ReactNode {
-        const {userState: {user, loading}} = this.props;
+        const {userState: {user}} = this.props;
         return (
             <Card style={{marginBottom: 30}}>
                 <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
                       size="large"
-                      spinning={loading || !user}>
+                      spinning={!user}>
 
                     <Descriptions size="small" column={2} style={{width: 400}}>
                         <Descriptions.Item label="Пользователь">{user ? user.login : "..."}</Descriptions.Item>
                         <Descriptions.Item label="Виджеты">33</Descriptions.Item>
                         <Descriptions.Item label="Новые сообщения">44</Descriptions.Item>
                         <Descriptions.Item label="Статус">
-                            <Tag color="blue">{user ? user.confirmStatus : "..."}</Tag>
+                            <UserConfirmStatusTag user={user}/>
                         </Descriptions.Item>
                     </Descriptions>
 

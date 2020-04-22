@@ -70,4 +70,17 @@ public class UserService {
     public Boolean existByEmailExcludeCurrentEmail(String email, String currentUserEmail) {
         return this.userRepository.existsByEmailAndEmailNot(email, currentUserEmail);
     }
+
+    @Transactional(readOnly = false)
+    public User changeUserPersonalData(String userId, String login, String email) {
+        User user = get(userId);
+        user.setLogin(login);
+
+        if (!user.getEmail().equals(email)){
+            user.setEmail(email);
+            user.setConfirmStatus(UserConfirmStatus.UNCONFIRMED);
+        }
+
+        return userRepository.save(user);
+    }
 }

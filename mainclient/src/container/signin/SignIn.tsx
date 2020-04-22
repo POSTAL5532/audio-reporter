@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
 import SignInForm from "container/signin/SignInForm";
 import {authorize} from "store/auth/actions";
-import {ApplicationState} from "configureStore";
+import {ApplicationState} from "store/configureStore";
 import {AuthState} from "store/auth/types";
 import AuthActionCreator from "store/auth/AuthActionCreator";
 import "container/signin/SignIn.css";

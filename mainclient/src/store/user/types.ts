@@ -10,11 +10,13 @@ export interface UserInfo {
 export interface UserState {
     readonly loading: boolean;
     readonly user: UserInfo;
+    readonly changePersonalDataError: string;
 }
 
 export enum UserActionTypes {
     SET_USER = "SET_USER",
-    SET_USER_LOADING = "SET_USER_LOADING"
+    SET_USER_LOADING = "SET_USER_LOADING",
+    SET_USER_CHANGE_PERSONAL_DATA_ERROR = "SET_USER_CHANGE_PERSONAL_DATA_ERROR"
 }
 
 export interface SetUserAction extends Action<UserActionTypes> {
@@ -27,6 +29,12 @@ export interface SetUserLoadingAction extends Action<UserActionTypes> {
     readonly loading: boolean;
 }
 
+export interface SetUserChangePersonalDataError extends Action<UserActionTypes> {
+    readonly type: UserActionTypes.SET_USER_CHANGE_PERSONAL_DATA_ERROR;
+    readonly changePersonalDataError: string;
+}
+
 export type UserAction =
     SetUserAction
-    | SetUserLoadingAction;
+    | SetUserLoadingAction
+    | SetUserChangePersonalDataError;

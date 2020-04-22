@@ -3,7 +3,7 @@ import {Card, Spin, Typography} from "antd";
 import "container/signup/SignUp.css";
 import SignUpForm from "container/signup/SignUpForm";
 import {AuthState} from "store/auth/types";
-import {ApplicationState} from "configureStore";
+import {ApplicationState} from "store/configureStore";
 import {register} from "store/auth/actions";
 import {connect} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";

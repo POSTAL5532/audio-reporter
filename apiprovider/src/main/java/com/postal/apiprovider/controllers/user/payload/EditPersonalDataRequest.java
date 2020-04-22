@@ -1,4 +1,4 @@
-package com.postal.apiprovider.controllers.auth.payload;
+package com.postal.apiprovider.controllers.user.payload;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 /**
  * @author SIE
  */
-public class SignUpRequest {
+public class EditPersonalDataRequest {
 
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9_-]{5,100}$")
@@ -18,14 +18,6 @@ public class SignUpRequest {
     @Email
     @Size(min = 2, max = 100)
     private String email;
-
-    @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9]{5,50}$")
-    private String password;
-
-    @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9]{5,50}$")
-    private String confirmPassword;
 
     public String getLogin() {
         return login;
@@ -41,21 +33,5 @@ public class SignUpRequest {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 }

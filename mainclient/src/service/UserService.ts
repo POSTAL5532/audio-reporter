@@ -25,4 +25,13 @@ export default class UserService {
                 (data.success ? Promise.resolve() : Promise.reject())
             );
     }
+
+    public editPersonalData(login: string, email: string): Promise<UserInfo> {
+        const editPersonalDataRequest = {
+            login: login,
+            email: email
+        };
+
+        return this.client.executePostRequest(`${UserService.USER_PATH}/editpersonaldata`, editPersonalDataRequest);
+    };
 }

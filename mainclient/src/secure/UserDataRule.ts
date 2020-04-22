@@ -10,7 +10,7 @@ export default class UserDataRule extends DataRule {
     public static PASSWORD_PATTERN: RegExp = /^[a-zA-Z0-9]{5,50}$/;
     public static LOGIN_OR_EMAIL_PATTERN: RegExp = /^[a-zA-Z0-9._@-]{2,100}$/;
 
-    public static loginRules(availabilityCheckType?: AvailabilityCheckType): Rule[] {
+    public static loginRules(availabilityCheckType: AvailabilityCheckType): Rule[] {
         const rules: Rule[] = [
             this.requiredFieldRule(),
             this.patternFieldRule(
@@ -25,7 +25,7 @@ export default class UserDataRule extends DataRule {
         return rules;
     }
 
-    public static emailRules(availabilityCheckType?: AvailabilityCheckType): Rule[] {
+    public static emailRules(availabilityCheckType: AvailabilityCheckType): Rule[] {
         const rules: Rule[] = [
             this.requiredFieldRule(),
             this.typeFieldRule("email")
@@ -59,9 +59,7 @@ export default class UserDataRule extends DataRule {
             validator(rule, value) {
                 return new UserService().checkLoginAvailability(value, availabilityCheckType)
                     .then(() => Promise.resolve())
-                    .catch(error => {
-                        return Promise.reject("Этот логин занят");
-                    });
+                    .catch(() => Promise.reject("Этот логин занят"));
             }
         }
     };
