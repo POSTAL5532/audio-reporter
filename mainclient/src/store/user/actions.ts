@@ -4,6 +4,7 @@ import UserActionCreator from "store/user/UserActionCreator";
 import UserService from "service/UserService";
 import {HttpStatusCode} from "service/HttpStatusCode";
 import {message} from "antd";
+import {deAuthorize} from "store/auth/actions";
 
 export type UserThunkAction = ThunkAction<void, UserState, unknown, UserAction>;
 
@@ -32,12 +33,43 @@ export const editPersonalData = (login: string, email: string): UserThunkAction 
             let errorMessage: string;
 
             if (error.status === HttpStatusCode.BAD_REQUEST) {
-                errorMessage = "Некорректные данные"
+                errorMessage = "Некорректные данные";
             } else {
-                errorMessage = "Непредвиденная ошибка"
+                errorMessage = "Непредвиденная ошибка";
             }
 
             dispatch(UserActionCreator.setUserChangePersonalDataError(errorMessage));
+            dispatch(UserActionCreator.setUserLoadingAction(false));
+        });
+};
+
+export const editPassword = (oldPassword: string, newPassword: string, confirmPassword: string): UserThunkAction => dispatch => {
+    dispatch(UserActionCreator.setUserChangePasswordError(null));
+    dispatch(UserActionCreator.setUserLoadingAction(true));
+
+    new UserService().editPassword(oldPassword, newPassword, confirmPassword)
+        .then(() => {
+            message.loading({
+                content: "Пароль успешно изменён! Вы будете перенаправлены на страницу авторизации",
+                key: "redirectMessage"
+            });
+
+            setTimeout(() => {
+                deAuthorize();
+            }, 3000);
+        })
+        .catch(error => {
+            let errorMessage: string;
+
+            if (error.status === HttpStatusCode.BAD_REQUEST && error.data.message === "BAD_OLD_PASSWORD") {
+                errorMessage = "Неверный старый пароль";
+            } else if (error.status === HttpStatusCode.BAD_REQUEST && error.data.message === "PASSWORDS_NOT_EQUAL") {
+                errorMessage = "Пароли не совпадают";
+            } else {
+                errorMessage = "Непредвиденная ошибка";
+            }
+
+            dispatch(UserActionCreator.setUserChangePasswordError(errorMessage));
             dispatch(UserActionCreator.setUserLoadingAction(false));
         });
 };

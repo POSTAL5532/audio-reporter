@@ -5,7 +5,9 @@ import com.postal.dataprovider.models.UserConfirmStatus;
 import com.postal.dataprovider.models.UserRole;
 import com.postal.dataprovider.models.UserStatus;
 import com.postal.dataprovider.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +20,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserService {
 
+    private final PasswordEncoder passwordEncoder;
+
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAll() {
@@ -76,11 +81,20 @@ public class UserService {
         User user = get(userId);
         user.setLogin(login);
 
-        if (!user.getEmail().equals(email)){
+        if (!user.getEmail().equals(email)) {
             user.setEmail(email);
             user.setConfirmStatus(UserConfirmStatus.UNCONFIRMED);
         }
 
         return userRepository.save(user);
+    }
+
+    @Transactional(readOnly = false)
+    public void changeUserPassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        if (!user.getPassword().equals(newPassword)) {
+            userRepository.save(user);
+        }
     }
 }

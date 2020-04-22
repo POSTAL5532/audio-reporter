@@ -13,7 +13,7 @@ public class LoginRequest {
     private String loginOrEmail;
 
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9]{5,100}$")
+    @Pattern(regexp = "^[a-zA-Z0-9]{5,50}$")
     private String password;
 
     public String getLoginOrEmail() {

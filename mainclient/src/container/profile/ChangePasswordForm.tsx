@@ -1,29 +1,41 @@
 import React, {Component} from 'react';
 import {Rule} from "antd/lib/form";
-import {Button, Col, Form, Input, Row} from "antd";
+import {Alert, Button, Col, Form, Input, Row} from "antd";
 import {LockOutlined} from "@ant-design/icons/lib";
 import UserDataRule from "secure/UserDataRule";
 
 export const passwordRules: Rule[] = [
     ...UserDataRule.passwordRules(true),
-    ({getFieldValue}) => ({
+    /*({getFieldValue}) => ({
         validator(rule, value) {
             if (!value || getFieldValue("newPassword") === value) {
                 return Promise.resolve();
             }
             return Promise.reject("Пароли не совпадают")
         }
-    })
+    })*/
 ];
 
-class ChangePasswordForm extends Component {
+type ChangePasswordFormProps = {
+    error: string;
+    onSubmit: (oldPassword: string, newPassword: string, confirmPassword: string) => void;
+}
+
+class ChangePasswordForm extends Component<ChangePasswordFormProps> {
+
+    onSubmit = (values: any) => {
+        this.props.onSubmit(values.oldPassword, values.newPassword, values.confirmPassword);
+    };
 
     render(): React.ReactNode {
         return (
-            <Form id="changePasswordForm" layout={"vertical"}>
+            <Form id="changePasswordForm"
+                  layout={"vertical"}
+                  onFinish={this.onSubmit}>
+
                 <Form.Item
                     name="oldPassword"
-                    rules={passwordRules}
+                    rules={UserDataRule.passwordRules(true)}
                     validateTrigger="onBlur">
                     <Input.Password prefix={<LockOutlined/>} placeholder="Старый пароль"/>
                 </Form.Item>
@@ -47,6 +59,12 @@ class ChangePasswordForm extends Component {
                         </Form.Item>
                     </Col>
                 </Row>
+
+                {
+                    this.props.error
+                        ? <Alert message={this.props.error} type="error" showIcon style={{marginBottom: 15}}/>
+                        : null
+                }
 
                 <Form.Item>
                     <Button type="primary" form="changePasswordForm" htmlType="submit">Изменить пароль</Button>

@@ -34,4 +34,14 @@ export default class UserService {
 
         return this.client.executePostRequest(`${UserService.USER_PATH}/editpersonaldata`, editPersonalDataRequest);
     };
+
+    public editPassword(oldPassword: string, newPassword: string, confirmPassword: string): Promise<UserInfo> {
+        const editPasswordRequest = {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword
+        };
+
+        return this.client.executePostRequest(`${UserService.USER_PATH}/editpassword`, editPasswordRequest);
+    };
 }

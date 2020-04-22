@@ -3,7 +3,8 @@ import {UserAction, UserActionTypes, UserState} from "store/user/types";
 const initialUserState: UserState = {
     loading: false,
     user: null,
-    changePersonalDataError: null
+    changePersonalDataError: null,
+    changePasswordError: null
 };
 
 export const userReducer = (state: UserState = initialUserState, action: UserAction): UserState => {
@@ -22,6 +23,11 @@ export const userReducer = (state: UserState = initialUserState, action: UserAct
             return {
                 ...state,
                 changePersonalDataError: action.changePersonalDataError
+            };
+        case UserActionTypes.SET_USER_CHANGE_PASSWORD_ERROR:
+            return {
+                ...state,
+                changePasswordError: action.changePasswordError
             };
         default:
             return state

@@ -1,5 +1,5 @@
 import {
-    SetUserAction,
+    SetUserAction, SetUserChangePasswordError,
     SetUserChangePersonalDataError,
     SetUserLoadingAction,
     UserActionTypes,
@@ -26,6 +26,13 @@ export default class UserActionCreator {
         return {
             type: UserActionTypes.SET_USER_CHANGE_PERSONAL_DATA_ERROR,
             changePersonalDataError: errorMessage
+        };
+    }
+
+    public static setUserChangePasswordError(errorMessage: string): SetUserChangePasswordError {
+        return {
+            type: UserActionTypes.SET_USER_CHANGE_PASSWORD_ERROR,
+            changePasswordError: errorMessage
         };
     }
 }

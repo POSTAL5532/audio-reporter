@@ -1,6 +1,7 @@
 package com.postal.apiprovider.controllers.user;
 
 import com.postal.apiprovider.controllers.ApiResponse;
+import com.postal.apiprovider.controllers.user.payload.EditPasswordRequest;
 import com.postal.apiprovider.controllers.user.payload.EditPersonalDataRequest;
 import com.postal.apiprovider.controllers.user.payload.UserInfo;
 import com.postal.apiprovider.exception.BadRequestException;
@@ -12,6 +13,7 @@ import com.postal.dataprovider.models.UserConfirmStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,11 +22,14 @@ import javax.validation.Valid;
 @RequestMapping("/api/user")
 public class UserController {
 
-    public static final String CONSIDERING_USER_CHECK = "consideringUser";
-    public static final String NOT_CONSIDERING_USER_CHECK = "notConsideringUser";
+    private static final String CONSIDERING_USER_CHECK = "consideringUser";
+    private static final String NOT_CONSIDERING_USER_CHECK = "notConsideringUser";
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -94,5 +99,28 @@ public class UserController {
         }
 
         return new UserInfo(user);
+    }
+
+    @PostMapping("/editpassword")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<ApiResponse> editPassword(
+            @CurrentUser UserPrincipal currentUser,
+            @Valid @RequestBody EditPasswordRequest passwordRequest) {
+
+        String oldPassword = passwordRequest.getOldPassword();
+        String newPassword = passwordRequest.getNewPassword();
+        String confirmPassword = passwordRequest.getConfirmPassword();
+
+        User user = userService.get(currentUser.getId());
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new BadRequestException("BAD_OLD_PASSWORD");
+        } else if (!newPassword.equals(confirmPassword)) {
+            throw new BadRequestException("PASSWORDS_NOT_EQUAL");
+        }
+
+        userService.changeUserPassword(user, newPassword);
+
+        return ResponseEntity.ok(new ApiResponse(true, "Password successful changed"));
     }
 }
