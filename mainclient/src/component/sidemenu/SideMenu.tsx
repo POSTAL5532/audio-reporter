@@ -7,8 +7,8 @@ import {
     PieChartOutlined,
     UserOutlined
 } from "@ant-design/icons/lib";
-import {deAuthorize} from "store/auth/actions";
-import "component/side/SideMenu.css"
+import "component/sidemenu/SideMenu.css"
+import {deAuthorize} from "logic/auth/authActions";
 
 const {Sider} = Layout;
 const {SubMenu} = Menu;

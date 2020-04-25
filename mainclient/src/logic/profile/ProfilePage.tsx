@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {Divider, Spin} from "antd";
 import {connect} from "react-redux";
-import PersonalDataForm from "container/profile/PersonalDataForm";
-import ChangePasswordForm from "container/profile/ChangePasswordForm";
-import GeneralUserInfoCard from "container/profile/GeneralUserInfoCard";
-import {UserState} from "store/user/types";
-import {ApplicationState} from "store/configureStore";
-import {editPassword, editPersonalData, loadUser} from "store/user/actions";
 import {LoadingOutlined} from "@ant-design/icons/lib";
+import {UserState} from "logic/profile/userTypes";
+import ProfilePersonalDataEditForm from "logic/profile/ProfilePersonalDataEditForm";
+import ProfilePasswordEditForm from "logic/profile/ProfilePasswordEditForm";
+import {ApplicationState} from "storeConfig";
+import {editPassword, editPersonalData, loadUser} from "logic/profile/userActions";
+import ProfileInfoCard from "logic/profile/ProfileInfoCard";
 
 type DispatchProps = {
     loadUser: () => void;
@@ -21,7 +21,7 @@ type StateProps = {
 
 type ProfileProps = DispatchProps & StateProps;
 
-class Profile extends Component<ProfileProps> {
+class ProfilePage extends Component<ProfileProps> {
 
     componentDidMount(): void {
         this.props.loadUser();
@@ -36,13 +36,13 @@ class Profile extends Component<ProfileProps> {
                       size="large"
                       spinning={!user || loading}>
 
-                    <GeneralUserInfoCard userInfo={user}/>
-                    <PersonalDataForm onSubmit={this.props.editPersonalData}
-                                      userInfo={user}
-                                      error={changePersonalDataError}/>
+                    <ProfileInfoCard userInfo={user}/>
+                    <ProfilePersonalDataEditForm onSubmit={this.props.editPersonalData}
+                                                 userInfo={user}
+                                                 error={changePersonalDataError}/>
                     <Divider/>
-                    <ChangePasswordForm onSubmit={this.props.editPassword}
-                                        error={changePasswordError}/>
+                    <ProfilePasswordEditForm onSubmit={this.props.editPassword}
+                                             error={changePasswordError}/>
 
                 </Spin>
             </>
@@ -60,4 +60,4 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     editPassword: (oldPassword: string, newPassword: string, confirmPassword: string) => dispatch(editPassword(oldPassword, newPassword, confirmPassword))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

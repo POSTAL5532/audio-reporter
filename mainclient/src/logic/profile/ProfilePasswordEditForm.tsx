@@ -6,14 +6,14 @@ import UserDataRule from "secure/UserDataRule";
 
 export const passwordRules: Rule[] = [
     ...UserDataRule.passwordRules(true),
-    /*({getFieldValue}) => ({
+    ({getFieldValue}) => ({
         validator(rule, value) {
             if (!value || getFieldValue("newPassword") === value) {
                 return Promise.resolve();
             }
             return Promise.reject("Пароли не совпадают")
         }
-    })*/
+    })
 ];
 
 type ChangePasswordFormProps = {
@@ -21,7 +21,7 @@ type ChangePasswordFormProps = {
     onSubmit: (oldPassword: string, newPassword: string, confirmPassword: string) => void;
 }
 
-class ChangePasswordForm extends Component<ChangePasswordFormProps> {
+class ProfilePasswordEditForm extends Component<ChangePasswordFormProps> {
 
     onSubmit = (values: any) => {
         this.props.onSubmit(values.oldPassword, values.newPassword, values.confirmPassword);
@@ -74,4 +74,4 @@ class ChangePasswordForm extends Component<ChangePasswordFormProps> {
     }
 }
 
-export default ChangePasswordForm;
+export default ProfilePasswordEditForm;

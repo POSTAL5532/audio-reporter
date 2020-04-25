@@ -1,13 +1,13 @@
 import React, {Component} from "react";
 import {Descriptions} from "antd";
-import {UserInfo} from "store/user/types";
-import UserConfirmStatusTag from "component/UserConfirmStatusTag";
+import UserConfirmStatusTag from "logic/profile/UserConfirmStatusTag";
+import {UserInfo} from "logic/profile/userTypes";
 
 type GeneralUserInfoCardProps = {
     userInfo: UserInfo
 }
 
-class GeneralUserInfoCard extends Component<GeneralUserInfoCardProps> {
+class ProfileInfoCard extends Component<GeneralUserInfoCardProps> {
 
     render(): React.ReactNode {
         const {userInfo} = this.props;
@@ -23,4 +23,4 @@ class GeneralUserInfoCard extends Component<GeneralUserInfoCardProps> {
     }
 }
 
-export default GeneralUserInfoCard;
+export default ProfileInfoCard;

@@ -1,10 +1,10 @@
 import {ThunkAction} from "redux-thunk";
-import {UserAction, UserInfo, UserState} from "store/user/types";
-import UserActionCreator from "store/user/UserActionCreator";
+import UserActionCreator from "logic/profile/UserActionCreator";
 import UserService from "service/UserService";
 import {HttpStatusCode} from "service/HttpStatusCode";
 import {message} from "antd";
-import {deAuthorize} from "store/auth/actions";
+import {UserAction, UserInfo, UserState} from "logic/profile/userTypes";
+import {deAuthorize} from "logic/auth/authActions";
 
 export type UserThunkAction = ThunkAction<void, UserState, unknown, UserAction>;
 

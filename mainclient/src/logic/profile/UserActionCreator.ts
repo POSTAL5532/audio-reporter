@@ -4,7 +4,8 @@ import {
     SetUserLoadingAction,
     UserActionTypes,
     UserInfo
-} from "store/user/types";
+} from "logic/profile/userTypes";
+
 
 export default class UserActionCreator {
 

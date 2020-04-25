@@ -2,8 +2,10 @@ import {
     AuthActionTypes,
     SetAuthErrorAction,
     SetAuthLoadingAction,
-    SetAuthStatusAction, SetRegErrorAction,
-} from "store/auth/types";
+    SetAuthStatusAction,
+    SetRegErrorAction
+} from "logic/auth/authTypes";
+
 
 export default class AuthActionCreator {
 

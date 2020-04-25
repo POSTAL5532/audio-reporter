@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import {Card, Spin, Typography} from "antd";
 import {connect} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
-import SignInForm from "container/signin/SignInForm";
-import {authorize} from "store/auth/actions";
-import {ApplicationState} from "store/configureStore";
-import {AuthState} from "store/auth/types";
-import AuthActionCreator from "store/auth/AuthActionCreator";
-import "container/signin/SignIn.css";
+import SignInForm from "logic/auth/signin/SignInForm";
+import AuthActionCreator from "logic/auth/AuthActionCreator";
+import "logic/auth/signin/SignInPage.css";
+import {AuthState} from "logic/auth/authTypes";
+import {ApplicationState} from "storeConfig";
+import {authorize} from "logic/auth/authActions";
 
 type DispatchProps = {
     authorize: (loginOrEmail: string, password: string) => void;
@@ -20,7 +20,7 @@ type StateProps = {
 
 type SignInProps = DispatchProps & StateProps;
 
-class SignIn extends Component<SignInProps> {
+class SignInPage extends Component<SignInProps> {
 
     componentDidMount(): void {
         this.props.clearSignInError();
@@ -58,4 +58,4 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     clearSignInError: () => dispatch(AuthActionCreator.setAuthErrorAction(false, null))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);

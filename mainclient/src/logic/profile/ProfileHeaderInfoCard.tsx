@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {Card, Descriptions, Spin} from "antd";
 import {connect} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
-import {UserState} from "store/user/types";
-import {ApplicationState} from "store/configureStore";
-import {loadUser} from "store/user/actions";
-import UserConfirmStatusTag from "component/UserConfirmStatusTag";
+import UserConfirmStatusTag from "logic/profile/UserConfirmStatusTag";
+import {UserState} from "logic/profile/userTypes";
+import {ApplicationState} from "storeConfig";
+import {loadUser} from "logic/profile/userActions";
 
 type DispatchProps = {
     loadUser: () => void;
@@ -17,7 +17,7 @@ type StateProps = {
 
 type HeaderProps = DispatchProps & StateProps;
 
-class HeadUserCard extends Component<HeaderProps> {
+class ProfileHeaderInfoCard extends Component<HeaderProps> {
 
     componentDidMount(): void {
         this.props.loadUser();
@@ -55,4 +55,4 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     loadUser: () => dispatch(loadUser())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeadUserCard);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileHeaderInfoCard);

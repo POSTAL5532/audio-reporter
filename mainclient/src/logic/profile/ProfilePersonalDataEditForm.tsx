@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {Alert, Button, Col, Form, Input, Row} from "antd";
 import {MailOutlined, UserOutlined} from "@ant-design/icons/lib";
 import UserDataRule from "secure/UserDataRule";
-import {UserInfo} from "store/user/types";
 import {FormInstance} from "antd/lib/form";
+import {UserInfo} from "logic/profile/userTypes";
 
 type PersonalDataFormProps = {
     userInfo: UserInfo;
@@ -15,7 +15,7 @@ type PersonalDataFormState = {
     fieldsChanged: boolean
 }
 
-class PersonalDataForm extends Component<PersonalDataFormProps, PersonalDataFormState> {
+class ProfilePersonalDataEditForm extends Component<PersonalDataFormProps, PersonalDataFormState> {
 
     state: PersonalDataFormState = {
         fieldsChanged: false
@@ -115,4 +115,4 @@ class PersonalDataForm extends Component<PersonalDataFormProps, PersonalDataForm
     }
 }
 
-export default PersonalDataForm;
+export default ProfilePersonalDataEditForm;

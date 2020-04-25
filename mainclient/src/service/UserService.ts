@@ -1,6 +1,6 @@
 import Client from "service/Client";
-import {UserInfo} from "store/user/types";
 import {AvailabilityCheckType} from "secure/UserDataRule";
+import {UserInfo} from "logic/profile/userTypes";
 
 export default class UserService {
 

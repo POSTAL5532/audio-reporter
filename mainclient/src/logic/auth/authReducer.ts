@@ -1,5 +1,5 @@
-import {AuthAction, AuthActionTypes, AuthState} from "store/auth/types";
 import {ACCESS_TOKEN} from "config";
+import {AuthAction, AuthActionTypes, AuthState} from "logic/auth/authTypes";
 
 const initialAuthState: AuthState = {
     loading: false,

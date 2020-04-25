@@ -2,17 +2,17 @@ import React, {Component} from 'react';
 import {Layout} from "antd";
 import {connect} from "react-redux";
 import {Redirect, Route} from "react-router";
-import SignIn from "container/signin/SignIn";
-import SignUp from "container/signup/SignUp";
-import {ApplicationState} from "store/configureStore";
 import AuthorizedRoute from "component/AuthorizedRoute";
-import Dashboard from "container/dashboard/Dashboard";
-import Profile from "container/profile/Profile";
-import AppHeader from "component/appheader/AppHeader";
-import SideMenu from "component/side/SideMenu";
-import ErrorPage from "container/ErrorPage";
-import HeadUserCard from "component/appheader/HeadUserCard";
-import "./App.css";
+import AppHeader from "component/AppHeader";
+import ErrorPage from "logic/ErrorPage";
+import "App.css";
+import SideMenu from "component/sidemenu/SideMenu";
+import ProfileHeaderInfoCard from "logic/profile/ProfileHeaderInfoCard";
+import DashboardPage from "logic/dashboard/DashboardPage";
+import SignInPage from "logic/auth/signin/SignInPage";
+import SignUpPage from "logic/auth/signup/SignUpPage";
+import ProfilePage from "logic/profile/ProfilePage";
+import {ApplicationState} from "storeConfig";
 
 const {Content} = Layout;
 
@@ -30,17 +30,17 @@ class App extends Component<StateProps> {
                 <AppHeader/>
 
                 {auth
-                    ? <HeadUserCard/>
+                    ? <ProfileHeaderInfoCard/>
                     : null}
 
                 <Route path="/" exact>
                     <Redirect to={auth ? "/dashboard" : "/signin"}/>
                 </Route>
                 <Route path="/signin" exact>
-                    {auth ? <Redirect to="/"/> : <SignIn/>}
+                    {auth ? <Redirect to="/"/> : <SignInPage/>}
                 </Route>
                 <Route path="/signup" exact>
-                    {auth ? <Redirect to="/"/> : <SignUp/>}
+                    {auth ? <Redirect to="/"/> : <SignUpPage/>}
                 </Route>
                 <Route path="/error" exact component={ErrorPage}/>
 
@@ -49,8 +49,8 @@ class App extends Component<StateProps> {
                         ? <SideMenu/>
                         : null}
                     <Content style={{background: "white", padding: "0 20px"}}>
-                        <AuthorizedRoute exact={true} path="/dashboard" component={<Dashboard/>}/>
-                        <AuthorizedRoute exact={true} path="/profile" component={<Profile/>}/>
+                        <AuthorizedRoute exact={true} path="/dashboard" component={<DashboardPage/>}/>
+                        <AuthorizedRoute exact={true} path="/profile" component={<ProfilePage/>}/>
                     </Content>
                 </Layout>
             </>

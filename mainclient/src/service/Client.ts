@@ -2,7 +2,7 @@ import axios, {AxiosError, AxiosResponse} from "axios";
 import {ACCESS_TOKEN, API_URL} from "config";
 import {SecurityErrorMessage} from "secure/SecurityErrorMessage";
 import {HttpStatusCode} from "service/HttpStatusCode";
-import {deAuthorize} from "store/auth/actions";
+import {deAuthorize} from "logic/auth/authActions";
 
 /**
  * Клиент для выполнения http-запросов к API

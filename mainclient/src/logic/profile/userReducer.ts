@@ -1,4 +1,4 @@
-import {UserAction, UserActionTypes, UserState} from "store/user/types";
+import {UserAction, UserActionTypes, UserState} from "logic/profile/userTypes";
 
 const initialUserState: UserState = {
     loading: false,

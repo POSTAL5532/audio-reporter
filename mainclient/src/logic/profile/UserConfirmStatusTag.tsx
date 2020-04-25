@@ -1,6 +1,6 @@
 import React from "react";
 import {Tag, Tooltip} from "antd";
-import {UserInfo} from "store/user/types";
+import {UserInfo} from "logic/profile/userTypes";
 
 type UserConfirmStatusTagProps = {
     user: UserInfo
