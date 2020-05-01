@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Layout} from "antd";
-import {connect} from "react-redux";
+import {useSelector} from "react-redux";
 import {Redirect, Route} from "react-router";
 import AuthorizedRoute from "component/AuthorizedRoute";
 import AppHeader from "component/AppHeader";
@@ -17,49 +17,40 @@ import {ApplicationState} from "storeConfig";
 const {Content} = Layout;
 
 type StateProps = {
-    auth: boolean
+    authStatus: boolean
 }
 
-class App extends Component<StateProps> {
+const App = () => {
+    const {authStatus} = useSelector<ApplicationState, StateProps>(
+        state => ({authStatus: state.authState.authStatus})
+    );
 
-    render(): React.ReactNode {
-        const {auth} = this.props;
+    return (
+        <>
+            <AppHeader/>
 
-        return (
-            <>
-                <AppHeader/>
+            {authStatus ? <ProfileHeaderInfoCard/> : null}
 
-                {auth
-                    ? <ProfileHeaderInfoCard/>
-                    : null}
+            <Route path="/" exact>
+                <Redirect to={authStatus ? "/dashboard" : "/signin"}/>
+            </Route>
+            <Route path="/signin" exact>
+                {authStatus ? <Redirect to="/"/> : <SignInPage/>}
+            </Route>
+            <Route path="/signup" exact>
+                {authStatus ? <Redirect to="/"/> : <SignUpPage/>}
+            </Route>
+            <Route path="/error" exact component={ErrorPage}/>
 
-                <Route path="/" exact>
-                    <Redirect to={auth ? "/dashboard" : "/signin"}/>
-                </Route>
-                <Route path="/signin" exact>
-                    {auth ? <Redirect to="/"/> : <SignInPage/>}
-                </Route>
-                <Route path="/signup" exact>
-                    {auth ? <Redirect to="/"/> : <SignUpPage/>}
-                </Route>
-                <Route path="/error" exact component={ErrorPage}/>
+            <Layout>
+                {authStatus ? <SideMenu/> : null}
+                <Content style={{background: "white", padding: "0 20px"}}>
+                    <AuthorizedRoute exact={true} path="/dashboard" component={<DashboardPage/>}/>
+                    <AuthorizedRoute exact={true} path="/profile" component={<ProfilePage/>}/>
+                </Content>
+            </Layout>
+        </>
+    );
+};
 
-                <Layout>
-                    {auth
-                        ? <SideMenu/>
-                        : null}
-                    <Content style={{background: "white", padding: "0 20px"}}>
-                        <AuthorizedRoute exact={true} path="/dashboard" component={<DashboardPage/>}/>
-                        <AuthorizedRoute exact={true} path="/profile" component={<ProfilePage/>}/>
-                    </Content>
-                </Layout>
-            </>
-        );
-    }
-}
-
-const mapStateToProps = (state: ApplicationState): StateProps => ({
-    auth: state.authState.authStatus
-});
-
-export default connect<StateProps, {}, {}, ApplicationState>(mapStateToProps)(App);
+export default App;

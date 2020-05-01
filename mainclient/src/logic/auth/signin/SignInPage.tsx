@@ -1,61 +1,56 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {Card, Spin, Typography} from "antd";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
 import SignInForm from "logic/auth/signin/SignInForm";
 import AuthActionCreator from "logic/auth/AuthActionCreator";
 import "logic/auth/signin/SignInPage.css";
-import {AuthState} from "logic/auth/authTypes";
 import {ApplicationState} from "storeConfig";
 import {authorize} from "logic/auth/authActions";
-
-type DispatchProps = {
-    authorize: (loginOrEmail: string, password: string) => void;
-    clearSignInError: () => void;
-}
+import {Dispatch} from "redux";
 
 type StateProps = {
-    authState: AuthState;
+    loading: boolean;
+    authError: boolean;
+    authErrorMessage: string;
 }
 
-type SignInProps = DispatchProps & StateProps;
+const SignInPage = () => {
+    const dispatch: Dispatch<any> = useDispatch<Dispatch<any>>();
+    const {loading, authError, authErrorMessage} = useSelector<ApplicationState, StateProps>(
+        (state: ApplicationState) => {
+            return {
+                loading: state.authState.loading,
+                authError: state.authState.authError,
+                authErrorMessage: state.authState.authErrorMessage
+            }
+        });
 
-class SignInPage extends Component<SignInProps> {
+    useEffect(() => {
+            dispatch(AuthActionCreator.setAuthErrorAction(false, null));
+        },
+        []
+    );
 
-    componentDidMount(): void {
-        this.props.clearSignInError();
-    }
-
-    onSubmit = (values: any): void => {
-        this.props.authorize(values.loginOrEmail, values.password);
+    const onSubmit = (values: any): void => {
+        dispatch(authorize(values.loginOrEmail, values.password))
     };
 
-    render(): React.ReactNode {
-        return (
-            <div className="signInContainer">
-                <Typography.Title>Вход</Typography.Title>
-                <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
-                      size="large"
-                      spinning={this.props.authState.loading}>
+    return (
+        <div className="signInContainer">
+            <Typography.Title>Вход</Typography.Title>
+            <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
+                  size="large"
+                  spinning={loading}>
 
-                    <Card>
-                        <SignInForm onSubmit={this.onSubmit}
-                                    error={this.props.authState.authError}
-                                    errorMessage={this.props.authState.authErrorMessage}/>
-                    </Card>
-                </Spin>
-            </div>
-        );
-    }
-}
+                <Card>
+                    <SignInForm onSubmit={onSubmit}
+                                error={authError}
+                                errorMessage={authErrorMessage}/>
+                </Card>
+            </Spin>
+        </div>
+    );
+};
 
-const mapStateToProps = (state: ApplicationState): StateProps => ({
-    authState: state.authState
-});
-
-const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-    authorize: (loginOrEmail: string, password: string) => dispatch(authorize(loginOrEmail, password)),
-    clearSignInError: () => dispatch(AuthActionCreator.setAuthErrorAction(false, null))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
+export default SignInPage;

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Button, Col, Form, Input, Row} from "antd";
 import {MailOutlined, UserOutlined} from "@ant-design/icons/lib";
 import UserDataRule from "secure/UserDataRule";
@@ -15,104 +15,90 @@ type PersonalDataFormState = {
     fieldsChanged: boolean
 }
 
-class ProfilePersonalDataEditForm extends Component<PersonalDataFormProps, PersonalDataFormState> {
+const ProfilePersonalDataEditForm = ({onSubmit, error, userInfo}: PersonalDataFormProps) => {
+    const [{fieldsChanged}, setState] = useState<PersonalDataFormState>({fieldsChanged: false});
+    const personalSettingsForm = React.createRef<FormInstance>();
 
-    state: PersonalDataFormState = {
-        fieldsChanged: false
+    const onFormSubmit = (values: any): void => {
+        onSubmit(values.login, values.email);
     };
 
-    personalSettingsForm = React.createRef<FormInstance>();
+    useEffect(() => {
+        fillFormDefaultValues();
 
-    onSubmit = (values: any): void => {
-        this.props.onSubmit(values.login, values.email);
-    };
-
-    componentDidUpdate(prevProps: Readonly<PersonalDataFormProps>): void {
-        if (prevProps === this.props) {
-            return;
+        if (userInfo) {
+            checkDataDifference();
         }
+    }, [userInfo]);
 
-        this.fillFormDefaultValues();
-
-        if (this.props.userInfo) {
-            this.checkDataDifference();
-        }
-    }
-
-    fillFormDefaultValues = () => {
-        const {userInfo} = this.props;
+    const fillFormDefaultValues = () => {
         const loginInitValue: string = userInfo ? userInfo.login : "";
         const emailInitValue: string = userInfo ? userInfo.email : "";
 
-        if (this.personalSettingsForm.current) {
-            this.personalSettingsForm.current.setFieldsValue({
+        if (personalSettingsForm.current) {
+            personalSettingsForm.current.setFieldsValue({
                 login: loginInitValue,
                 email: emailInitValue
             });
         }
     };
 
-    checkDataDifference = () => {
-        const loginValue: string = this.personalSettingsForm.current.getFieldValue("login");
-        const emailValue: string = this.personalSettingsForm.current.getFieldValue("email");
-        const {login, email} = this.props.userInfo;
-
-        this.setState({
-            ...this.state,
+    const checkDataDifference = () => {
+        const loginValue: string = personalSettingsForm.current.getFieldValue("login");
+        const emailValue: string = personalSettingsForm.current.getFieldValue("email");
+        const {login, email} = userInfo;
+        setState({
             fieldsChanged: loginValue !== login || emailValue !== email
         });
     };
 
-    render(): React.ReactNode {
-        const {userInfo} = this.props;
+    return (
+        <Form id="personalDataForm"
+              size="middle"
+              ref={personalSettingsForm}
+              onFinish={onFormSubmit}>
 
-        return (
-            <Form id="personalDataForm"
-                  size="middle"
-                  ref={this.personalSettingsForm}
-                  onFinish={this.onSubmit}>
-
-                <Form.Item
-                    name="login"
-                    rules={UserDataRule.loginRules("consideringUser")}
-                    validateFirst
-                    validateTrigger="onBlur">
-                    <Input prefix={<UserOutlined/>}
-                           placeholder="Логин"
-                           onChange={this.checkDataDifference}/>
-                </Form.Item>
+            <Form.Item
+                name="login"
+                rules={UserDataRule.loginRules("consideringUser")}
+                validateFirst
+                validateTrigger="onBlur">
+                <Input prefix={<UserOutlined/>}
+                       placeholder="Логин"
+                       onChange={checkDataDifference}/>
+            </Form.Item>
 
 
-                <Row gutter={10}>
-                    <Col span={18}>
-                        <Form.Item
-                            name="email"
-                            rules={UserDataRule.emailRules("consideringUser")}
-                            validateFirst={true}
-                            validateTrigger="onBlur">
-                            <Input prefix={<MailOutlined/>}
-                                   placeholder="Логин"
-                                   onChange={this.checkDataDifference}/>
-                        </Form.Item>
-                    </Col>
+            <Row gutter={10}>
+                <Col span={18}>
+                    <Form.Item
+                        name="email"
+                        rules={UserDataRule.emailRules("consideringUser")}
+                        validateFirst={true}
+                        validateTrigger="onBlur">
+                        <Input prefix={<MailOutlined/>}
+                               placeholder="Логин"
+                               onChange={checkDataDifference}/>
+                    </Form.Item>
+                </Col>
 
-                    <Col span={6}>
-                        <Button block disabled={!userInfo || userInfo.confirmStatus === "CONFIRMED"}>Подтвердить</Button>
-                    </Col>
-                </Row>
+                <Col span={6}>
+                    <Button block
+                            disabled={!userInfo || userInfo.confirmStatus === "CONFIRMED"}>Подтвердить</Button>
+                </Col>
+            </Row>
 
-                {
-                    this.props.error
-                        ? <Alert message={this.props.error} type="error" showIcon style={{marginBottom: 15}}/>
-                        : null
-                }
+            {
+                error
+                    ? <Alert message={error} type="error" showIcon style={{marginBottom: 15}}/>
+                    : null
+            }
 
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" disabled={!this.state.fieldsChanged}>Сохранить</Button>
-                </Form.Item>
-            </Form>
-        );
-    }
-}
+            <Form.Item>
+                <Button type="primary" htmlType="submit" disabled={!fieldsChanged}>Сохранить</Button>
+            </Form.Item>
+        </Form>
+    );
+};
 
 export default ProfilePersonalDataEditForm;

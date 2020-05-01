@@ -1,58 +1,46 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {Card, Descriptions, Spin} from "antd";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
 import UserConfirmStatusTag from "logic/profile/UserConfirmStatusTag";
-import {UserState} from "logic/profile/userTypes";
+import {UserInfo} from "logic/profile/userTypes";
 import {ApplicationState} from "storeConfig";
 import {loadUser} from "logic/profile/userActions";
-
-type DispatchProps = {
-    loadUser: () => void;
-}
+import {Dispatch} from "redux";
 
 type StateProps = {
-    userState: UserState;
+    userInfo: UserInfo;
 }
 
-type HeaderProps = DispatchProps & StateProps;
+const ProfileHeaderInfoCard = () => {
+    const dispatch: Dispatch<any> = useDispatch<Dispatch<any>>();
+    const {userInfo} = useSelector<ApplicationState, StateProps>(state => ({
+        userInfo: state.userState.user
+    }));
 
-class ProfileHeaderInfoCard extends Component<HeaderProps> {
+    useEffect(() => {
+            dispatch(loadUser());
+        },
+        []);
 
-    componentDidMount(): void {
-        this.props.loadUser();
-    }
+    return (
+        <Card style={{marginBottom: 30}}>
+            <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
+                  size="large"
+                  spinning={!userInfo}>
 
+                <Descriptions size="small" column={2} style={{width: 400}}>
+                    <Descriptions.Item label="Пользователь">{userInfo ? userInfo.login : "..."}</Descriptions.Item>
+                    <Descriptions.Item label="Виджеты">33</Descriptions.Item>
+                    <Descriptions.Item label="Новые сообщения">44</Descriptions.Item>
+                    <Descriptions.Item label="Статус">
+                        <UserConfirmStatusTag user={userInfo}/>
+                    </Descriptions.Item>
+                </Descriptions>
 
-    render(): React.ReactNode {
-        const {userState: {user}} = this.props;
-        return (
-            <Card style={{marginBottom: 30}}>
-                <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
-                      size="large"
-                      spinning={!user}>
+            </Spin>
+        </Card>
+    );
+};
 
-                    <Descriptions size="small" column={2} style={{width: 400}}>
-                        <Descriptions.Item label="Пользователь">{user ? user.login : "..."}</Descriptions.Item>
-                        <Descriptions.Item label="Виджеты">33</Descriptions.Item>
-                        <Descriptions.Item label="Новые сообщения">44</Descriptions.Item>
-                        <Descriptions.Item label="Статус">
-                            <UserConfirmStatusTag user={user}/>
-                        </Descriptions.Item>
-                    </Descriptions>
-
-                </Spin>
-            </Card>
-        );
-    }
-}
-
-const mapStateToProps = (state: ApplicationState): StateProps => ({
-    userState: state.userState
-});
-
-const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-    loadUser: () => dispatch(loadUser())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileHeaderInfoCard);
+export default ProfileHeaderInfoCard;

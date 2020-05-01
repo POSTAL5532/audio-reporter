@@ -1,61 +1,55 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {Card, Spin, Typography} from "antd";
 import "logic/auth/signup/SignUpPage.css";
 import SignUpForm from "logic/auth/signup/SignUpForm";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {LoadingOutlined} from "@ant-design/icons/lib";
 import AuthActionCreator from "logic/auth/AuthActionCreator";
-import {AuthState} from "logic/auth/authTypes";
 import {ApplicationState} from "storeConfig";
 import {register} from "logic/auth/authActions";
-
-type DispatchProps = {
-    register: (email: string, login: string, password: string, confirmPassword: string) => void;
-    clearSignUpError: () => void;
-}
+import {Dispatch} from "redux";
 
 type StateProps = {
-    authState: AuthState;
+    loading: boolean;
+    regError: boolean;
+    regErrorMessage: string;
 }
 
-type SignUpProps = DispatchProps & StateProps;
+const SignUpPage = () => {
+    const dispatch: Dispatch<any> = useDispatch<Dispatch<any>>();
+    const {loading, regError, regErrorMessage} = useSelector<ApplicationState, StateProps>(
+        (state: ApplicationState) => {
+            return {
+                loading: state.authState.loading,
+                regError: state.authState.regError,
+                regErrorMessage: state.authState.regErrorMessage
+            }
+        });
 
-class SignUpPage extends Component<SignUpProps> {
+    useEffect(() => {
+            dispatch(AuthActionCreator.setAuthErrorAction(false, null));
+        },
+        []
+    );
 
-    componentDidMount(): void {
-        this.props.clearSignUpError();
-    }
-
-    onSubmit = (values: any): void => {
-        this.props.register(values.email, values.login, values.password, values.confirmPassword);
+    const onSubmit = (values: any): void => {
+        dispatch(register(values.email, values.login, values.password, values.confirmPassword))
     };
 
-    render(): React.ReactNode {
-        return (
-            <div className="signUpContainer">
-                <Typography.Title>Регистрация</Typography.Title>
-                <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
-                      size="large"
-                      spinning={this.props.authState.loading}>
-                    <Card>
-                        <SignUpForm onSubmit={this.onSubmit}
-                                    error={this.props.authState.regError}
-                                    errorMessage={this.props.authState.authErrorMessage}/>
-                    </Card>
-                </Spin>
-            </div>
-        );
-    }
-}
+    return (
+        <div className="signUpContainer">
+            <Typography.Title>Регистрация</Typography.Title>
+            <Spin indicator={<LoadingOutlined style={{fontSize: 40}} spin/>}
+                  size="large"
+                  spinning={loading}>
+                <Card>
+                    <SignUpForm onSubmit={onSubmit}
+                                error={regError}
+                                errorMessage={regErrorMessage}/>
+                </Card>
+            </Spin>
+        </div>
+    );
+};
 
-const mapStateToProps = (state: ApplicationState): StateProps => ({
-    authState: state.authState
-});
-
-const mapDispatchToProps = (dispatch: any): DispatchProps => ({
-    register: (email: string, login: string, password: string, confirmPassword: string) =>
-        dispatch(register(email, login, password, confirmPassword)),
-    clearSignUpError: () => dispatch(AuthActionCreator.setRegErrorAction(false, null))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);
+export default SignUpPage;

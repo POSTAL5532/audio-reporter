@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React from "react";
+import {useSelector} from "react-redux";
 import {Redirect, Route} from "react-router";
 import {AuthState} from "logic/auth/authTypes";
 import {ApplicationState} from "storeConfig";
 
 type ComponentProps = {
-    component: Component;
+    component: JSX.Element;
     path: string;
     exact: boolean;
 };
@@ -14,25 +14,14 @@ type StateProps = {
     authState: AuthState;
 }
 
-type AuthorizedRouteProps = ComponentProps & StateProps;
+const AuthorizedRoute = ({component, path, exact}: ComponentProps) => {
+    const {authState} = useSelector<ApplicationState, StateProps>(state => ({authState: state.authState}));
 
-class AuthorizedRoute extends Component<AuthorizedRouteProps> {
+    return (
+        <Route exact={exact} path={path}>
+            {authState.authStatus ? component : <Redirect to="/"/>}
+        </Route>
+    );
+};
 
-    render(): React.ReactNode {
-        return (
-            <Route exact={this.props.exact} path={this.props.path}>
-                {
-                    this.props.authState.authStatus
-                        ? this.props.component
-                        : <Redirect to="/"/>
-                }
-            </Route>
-        );
-    }
-}
-
-const mapStateToProps = (state: ApplicationState): StateProps => ({
-    authState: state.authState
-});
-
-export default connect(mapStateToProps, {})(AuthorizedRoute);
+export default AuthorizedRoute;
